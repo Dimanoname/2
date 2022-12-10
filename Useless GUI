@@ -1,5 +1,4 @@
 -- Aliases
-
 local plr = game:GetService("Players").LocalPlayer
 local char = plr.Character
 local root = char.HumanoidRootPart
@@ -18,16 +17,13 @@ local camera = game.Workspace.CurrentCamera
 local Workspace = game:GetService("Workspace")
 local playgui = game.Players.LocalPlayer.PlayerGui.Play
 local wc = workspace[plr.Name] 
-
 -- Anti Idle --
 local VirtualUser=game:service'VirtualUser'
 game:service'Players'.LocalPlayer.Idled:connect(function()
 	VirtualUser:CaptureController()
 	VirtualUser:ClickButton2(Vector2.new())
 end)
-
 -- Properties
-
 workspace[plr.Name].HumanoidRootPart.Anchored = false
 
 showtopplayersactive = false
@@ -46,9 +42,7 @@ ESPEnabled = false
 ESPLength = 5000
 
 human:UnequipTools()
-
 -- Round
-
 function round(num, numDecimalPlaces)
 	local mult = 10^(numDecimalPlaces or 0)
 	return math.floor(num * mult + 0.5) / mult
@@ -135,26 +129,18 @@ function converttodays(mins)
 		end
 	end
 end
-
 -- Main info
-
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/1/main/KavoUI"))()
 local Window = Library.CreateLib("Useless GUI | SPTS: Custom II", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
-
 -- Info Tab
-
 local Info = Window:NewTab("Info")
-
 local Creator = Info:NewSection("Creator:")
 Creator:NewLabel("Discord: Useless#3770")
-
 local ToggleGui = Info:NewSection("Toggle UI")
 ToggleGui:NewKeybind("Toggle UI", "Toggle UI", Enum.KeyCode.RightControl, function()
 	Library:ToggleUI()
 end)
-
 -- Misc Tab
-
 local Misc = Window:NewTab("Misc")
 local Funcs = Misc:NewSection("Misc:")
 Funcs:NewButton("ESP", "Enabling ESP", function()
@@ -267,9 +253,7 @@ spawn(function()
 		end
 	end
 end)
-
 -- Farm Tab
-
 local Farm = Window:NewTab("Auto Farm")
 
 local Fist = Farm:NewSection("Fist Farm")
@@ -398,8 +382,30 @@ Psyc:NewToggle("Psychic Power", "Toggling Psychic Farm", function(farmpsychic)
 	end
 end)
 
--- Teleport Tab
+local WJ = Farm:NewSection("Walk Speed & Jump Power Farm")
+WJ:NewToggle("Walk Speed ", "Toggling Walk Speed Farm", function(farmwalk)
+	if farmwalk then
+		farmspeedactive = true
+		game.workspace[tostring(MyPlr)].HumanoidRootPart.Anchored = true
+	else
+		farmspeedactive = false
+	end
+end)
+WJ:NewToggle("Jump Power", "Toggling Jump Power Farm", function(farmjump)
+	if farmjump then
+		farmjumpactive = true
+		game.workspace[tostring(MyPlr)].HumanoidRootPart.Anchored = true
+	else
+		farmjumpactive = false
+	end
+end)
 
+WJ:NewButton("Disable anchor", "Makes ur player able to move", function()
+	if game.workspace[tostring(MyPlr)].HumanoidRootPart.Anchored ~= false then
+		game.workspace[tostring(MyPlr)].HumanoidRootPart.Anchored = false
+	end
+end)
+-- Teleport Tab
 local Teleports = Window:NewTab("Teleports")
 
 local Other = Teleports:NewSection("Others:")
@@ -544,9 +550,7 @@ end)
 local PP1Sx = PPTP:NewButton("Psychic 1Sx (x1T)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(462, 1010, -844)
 end)
-
 -- ESP
-
 CharAddedEvent = { }
 
 Plrs.PlayerAdded:connect(function(plr)
@@ -709,9 +713,7 @@ Run:BindToRenderStep("UpdateESP", Enum.RenderPriority.Character.Value, function(
 		UpdateESP(v)
 	end
 end)
-
 -- Farming
-
 spawn(function()
 	while true do
 		while farmfistactive and not playerdied do
@@ -907,8 +909,33 @@ spawn(function()
 	end
 end)
 
--- Return On Death
+spawn(function()
+	while true do
+		wait(0.25)
+		while farmspeedactive do
+			game.workspace[tostring(MyPlr)].Humanoid.WalkSpeed = 0
+			VirtualUser:CaptureController()
+			wait(0.25)
+			VirtualUser:SetKeyDown(119)
+			wait(0.5)
+			VirtualUser:SetKeyUp(119)
+		end
+	end
+end)
 
+spawn(function()
+	while true do
+		wait(0.25)
+		while farmjumpactive do
+			wait(1)
+			for i = 1, 20 do
+			   game.workspace[tostring(MyPlr)].Humanoid.Jump = true
+			   wait(0.1)
+			end
+		end
+	end
+end)
+-- Return On Death
 local player = game:GetService("Players").LocalPlayer
 
 spawn(function()
@@ -952,9 +979,7 @@ spawn(function()
 		wait(1)
 	end		
 end)
-
 -- ServerHop
-
 local PlaceID = game.PlaceId
 local AllIDs = {}
 local foundAnything = ""
