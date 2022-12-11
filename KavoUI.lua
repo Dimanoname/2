@@ -106,7 +106,7 @@ local themeStyles = {
         ElementColor = Color3.fromRGB(38, 45, 71)
     },
     Midnight = {
-        SchemeColor = Color3.fromRGB(77, 131, 244),
+        SchemeColor = Color3.fromRGB(50, 0, 208),
         Background = Color3.fromRGB(10, 10, 10),
         Header = Color3.fromRGB(10, 10, 10),
         TextColor = Color3.fromRGB(255, 255, 255),
