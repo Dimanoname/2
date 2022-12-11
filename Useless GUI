@@ -715,10 +715,37 @@ Run:BindToRenderStep("UpdateESP", Enum.RenderPriority.Character.Value, function(
 	end
 end)
 -- Farming
+
+function EquipFS()
+	local plr = game:GetService("Players").LocalPlayer
+	local Backpack = plr.Backpack
+	local children = Backpack:GetChildren()
+	for i = 1, #children do
+		local child = children[i]
+    	if child.Name == "FSTool" then
+       		child.Parent = workspace[plr.Name]
+    	end
+	end
+end
+
+function EquipPP()
+	local plr = game:GetService("Players").LocalPlayer
+	local Backpack = plr.Backpack
+	local children = Backpack:GetChildren()
+	for i = 1, #children do
+		local child = children[i]
+    	if child.Name == "PPTool" then
+       		child.Parent = workspace[plr.Name]
+    	end
+	end
+end
+
 spawn(function()
 	while true do
 		while farmfistactive and not playerdied do
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/1/main/FSToolEquip"))()
+			human:UnequipTools()
+			FSTool = Backpack.FSTool
+			EquipFS()
 			wait(1)
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.FS.Value)) >= 350e18 then
 				farmpsychicactive = false
@@ -870,6 +897,7 @@ end)
 spawn(function()
 	while true do
 		if farmpsychicactive and game.Players.LocalPlayer.Character:WaitForChild("Humanoid") then
+			EquipPP()
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.PP.Value)) >= 1e21 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(462, 1010, -844)
 				farmfistactive = false
@@ -908,7 +936,6 @@ spawn(function()
 				farmbodyactive = false
 			end
 			wait(0.1)
-			loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/1/main/PPToolEquip"))()
 		end
 		wait(1)
 	end
