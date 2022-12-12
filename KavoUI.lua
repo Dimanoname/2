@@ -324,14 +324,14 @@ function Kavo.CreateLib(kavName, themeList)
     Objects[coverup_2] = "Header"
     coverup_2.BorderSizePixel = 0
     coverup_2.Position = UDim2.new(0.949939311, 0, 0, 0)
-    coverup_2.Size = UDim2.new(0, 7, 0, 209)
+    coverup_2.Size = UDim2.new(0, 7, 0, 289)
 
     tabFrames.Name = "tabFrames"
     tabFrames.Parent = MainSide
     tabFrames.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     tabFrames.BackgroundTransparency = 1.000
     tabFrames.Position = UDim2.new(0.0438990258, 0, -0.00066378375, 0)
-    tabFrames.Size = UDim2.new(0, 135, 0, 283)
+    tabFrames.Size = UDim2.new(0, 135, 0, 293)
 
     tabListing.Name = "tabListing"
     tabListing.Parent = tabFrames
