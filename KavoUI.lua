@@ -331,7 +331,7 @@ function Kavo.CreateLib(kavName, themeList)
     tabFrames.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     tabFrames.BackgroundTransparency = 1.000
     tabFrames.Position = UDim2.new(0.0438990258, 0, -0.00066378375, 0)
-    tabFrames.Size = UDim2.new(0, 135, 0, 253)
+    tabFrames.Size = UDim2.new(0, 135, 0, 283)
 
     tabListing.Name = "tabListing"
     tabListing.Parent = tabFrames
@@ -355,7 +355,7 @@ function Kavo.CreateLib(kavName, themeList)
     infoContainer.BorderColor3 = Color3.fromRGB(27, 42, 53)
     infoContainer.ClipsDescendants = true
     infoContainer.Position = UDim2.new(0.299047619, 0, 0.874213815, 0)
-    infoContainer.Size = UDim2.new(0, 368, 0, 33)
+    infoContainer.Size = UDim2.new(0, 368, 0, 15)
 
     
     coroutine.wrap(function()
