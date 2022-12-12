@@ -235,7 +235,7 @@ function Kavo.CreateLib(kavName, themeList)
     blurFrame.BackgroundTransparency = 1
     blurFrame.BorderSizePixel = 0
     blurFrame.Position = UDim2.new(-0.0222222228, 0, -0.0371747203, 0)
-    blurFrame.Size = UDim2.new(0, 376, 0, 289)
+    blurFrame.Size = UDim2.new(0, 376, 0, 317)
     blurFrame.ZIndex = 999
 
     ScreenGui.Parent = game.CoreGui
@@ -248,7 +248,7 @@ function Kavo.CreateLib(kavName, themeList)
     Main.BackgroundColor3 = themeList.Background
     Main.ClipsDescendants = true
     Main.Position = UDim2.new(0.336503863, 0, 0.275485456, 0)
-    Main.Size = UDim2.new(0, 525, 0, 318)
+    Main.Size = UDim2.new(0, 525, 0, 346)
 
     MainCorner.CornerRadius = UDim.new(0, 4)
     MainCorner.Name = "MainCorner"
@@ -343,7 +343,7 @@ function Kavo.CreateLib(kavName, themeList)
     pages.BackgroundTransparency = 1.000
     pages.BorderSizePixel = 0
     pages.Position = UDim2.new(0.299047589, 0, 0.122641519, 0)
-    pages.Size = UDim2.new(0, 360, 0, 289)
+    pages.Size = UDim2.new(0, 360, 0, 298)
 
     Pages.Name = "Pages"
     Pages.Parent = pages
