@@ -1,5 +1,5 @@
 local thing = [[
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/2/main/Useless%20Gui.lua"))()
+
 ]]
 
 
