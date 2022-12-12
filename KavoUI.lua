@@ -355,7 +355,7 @@ function Kavo.CreateLib(kavName, themeList)
     infoContainer.BorderColor3 = Color3.fromRGB(27, 42, 53)
     infoContainer.ClipsDescendants = true
     infoContainer.Position = UDim2.new(0.299047619, 0, 0.874213815, 0)
-    infoContainer.Size = UDim2.new(0, 368, 0, 33)
+    infoContainer.Size = UDim2.new(0, 368, 0, 28)
 
     
     coroutine.wrap(function()
