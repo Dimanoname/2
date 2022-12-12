@@ -269,7 +269,7 @@ function Kavo.CreateLib(kavName, themeList)
     Objects[coverup] = "BackgroundColor3"
     coverup.BorderSizePixel = 0
     coverup.Position = UDim2.new(0, 0, 0.758620679, 0)
-    coverup.Size = UDim2.new(0, 525, 0, 7)
+    coverup.Size = UDim2.new(0, 525, 0, 5)
 
     title.Name = "title"
     title.Parent = MainHeader
@@ -355,7 +355,7 @@ function Kavo.CreateLib(kavName, themeList)
     infoContainer.BorderColor3 = Color3.fromRGB(27, 42, 53)
     infoContainer.ClipsDescendants = true
     infoContainer.Position = UDim2.new(0.299047619, 0, 0.874213815, 0)
-    infoContainer.Size = UDim2.new(0, 368, 0, 28)
+    infoContainer.Size = UDim2.new(0, 368, 0, 33)
 
     
     coroutine.wrap(function()
