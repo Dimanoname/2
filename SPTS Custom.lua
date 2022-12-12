@@ -859,14 +859,14 @@ end)
 spawn(function()
 	while true do
 		if farmbodyactive and game.Players.LocalPlayer.Character:WaitForChild("Humanoid") then
-			if tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 40e18 then
+			if tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 120e18 then
 				workspace[plr.Name].HumanoidRootPart.Anchored = false
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1823, 59, 802)
 				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 1e18 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 2e18 then
 				workspace[plr.Name].HumanoidRootPart.Anchored = false
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1810, 58, 756)
 				wait(1)
