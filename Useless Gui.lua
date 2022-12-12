@@ -214,10 +214,13 @@ end)
 
 player = tostring(MyPlr)
 spawn(function()
-	LocationX = round(game.Players[player].Character.HumanoidRootPart.Position.x, 0)
-	LocationY = round(game.Players[player].Character.HumanoidRootPart.Position.y, 0)
-	LocationZ = round(game.Players[player].Character.HumanoidRootPart.Position.z, 0)
-	location = Vector3.new(round(game.Players[player].Character.HumanoidRootPart.Position.x, 0), round(game.Players[player].Character.HumanoidRootPart.Position.y, 0), round(game.Players[player].Character.HumanoidRootPart.Position.z, 0))
+	while true do
+		LocationX = round(game.Players[player].Character.HumanoidRootPart.Position.x, 0)
+		LocationY = round(game.Players[player].Character.HumanoidRootPart.Position.y, 0)
+		LocationZ = round(game.Players[player].Character.HumanoidRootPart.Position.z, 0)
+		location = Vector3.new(round(game.Players[player].Character.HumanoidRootPart.Position.x, 0), round(game.Players[player].Character.HumanoidRootPart.Position.y, 0), round(game.Players[player].Character.HumanoidRootPart.Position.z, 0))
+		wait(0.5)
+	end
 end)
 
 local PTP = StatCheck:NewButton("Player coords: ","Teleports you to choosen player", function()
