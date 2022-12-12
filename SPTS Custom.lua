@@ -3,6 +3,27 @@ while not game:IsLoaded() do
     game.Loaded:Wait()
 end
 
+local bc = BrickColor.new("Gold") -- Change white to the colour you want.
+local bc2 = BrickColor.new("Grey") -- Change white to the colour you want.
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+    Text = "[Useless Gui]"; -- Change "MuppetIsEpic!" to the alert you want.
+    Font = Enum.Font.Cartoon;
+    Color = bc2.Color;
+    FontSize = Enum.FontSize.Size96
+})
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+    Text = "Thanks for using!"; -- Change "MuppetIsEpic!" to the alert you want.
+    Font = Enum.Font.Cartoon;
+    Color = bc.Color;
+    FontSize = Enum.FontSize.Size96
+})
+game.StarterGui:SetCore("ChatMakeSystemMessage", {
+    Text = "[Useless Gui]"; -- Change "MuppetIsEpic!" to the alert you want.
+    Font = Enum.Font.Cartoon;
+    Color = bc2.Color;
+    FontSize = Enum.FontSize.Size96
+})
+
 -- Aliases
 local plr = game:GetService("Players").LocalPlayer
 local char = plr.Character
