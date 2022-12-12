@@ -184,9 +184,12 @@ Funcs:NewButton("Disable anchor", "Makes ur player able to move", function()
 	end
 end)
 
-local StatCheck = Misc:NewSection("Stats:")
+-- Stat Viewer
+local Pls = Window:NewTab("Players")
+local Plas = Pls:NewSection("Player list:")
+
 PlayerNames = {}
-local PL = StatCheck:NewDropdown("Player list","List of players", PlayerNames, function(nick)
+local PL = Plas:NewDropdown("Player list","List of players", PlayerNames, function(nick)
 	local check = Plrs:WaitForChild(nick)
 	print(tostring(check) .. " was found.")
 	player = nick
@@ -208,9 +211,12 @@ function UpdatePlayerList()
 	PL:Refresh(PlayerNames)
 end
 
-local PLRESET = StatCheck:NewButton("Reset Player List","Update player list", function()
+local PLRESET = Plas:NewButton("Reset Player List","Update player list", function()
 	UpdatePlayerList()
 end)
+
+local StatChecker = Window:NewTab("Stats")
+local StatCheck = StatChecker:NewSection("Viewer:")
 
 player = tostring(MyPlr)
 spawn(function()
@@ -218,64 +224,36 @@ spawn(function()
 		LocationX = round(game.Players[player].Character.HumanoidRootPart.Position.x, 0)
 		LocationY = round(game.Players[player].Character.HumanoidRootPart.Position.y, 0)
 		LocationZ = round(game.Players[player].Character.HumanoidRootPart.Position.z, 0)
-		location = Vector3.new(round(game.Players[player].Character.HumanoidRootPart.Position.x, 0), round(game.Players[player].Character.HumanoidRootPart.Position.y, 0), round(game.Players[player].Character.HumanoidRootPart.Position.z, 0))
 		wait(0.5)
 	end
 end)
 
-local PTP = StatCheck:NewButton("Player coords: ","Teleports you to choosen player", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = location
-end)
+
+local TpPlayer = Funcs:NewButton("Player coords: ","Teleports you to choosen player", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(LocationX, LocationY,  LocationZ)
+end) 
 local PN = StatCheck:NewLabel("Player Name: ")
 local HP = StatCheck:NewLabel("Player Health: ")
-local rep = StatCheck:NewLabel("Reputation")
 local FS = StatCheck:NewLabel("Fist Strength: ")
 local BT = StatCheck:NewLabel("Body Toughness: ")
 local WS = StatCheck:NewLabel("Walk Speed: ")
 local JF = StatCheck:NewLabel("Jump Power: ")
 local PP = StatCheck:NewLabel("Psychic Power: ")
-local TotalPower = StatCheck:NewLabel("Total Power: ")
-local Quest = StatCheck:NewLabel("Quest: ")
 local Tokens = StatCheck:NewLabel("Tokens: ")
-local TP = StatCheck:NewLabel("Time Player: ")
 
 spawn(function()
 	while true do
 		while player ~= "" do
 			wait(0.5)
-			PTP:UpdateButton("Player coords: " .. tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
 			PN:UpdateLabel("Player Name: " .. player)
 			HP:UpdateLabel("Player Health: " .. converttoletter(tostring(game.workspace[player].Humanoid.Health)) .. "/" .. converttoletter(tostring(game.workspace[player].Humanoid.MaxHealth)))
-			rep:UpdateLabel("Reputation: " .. tostring(game.Players[player].leaderstats.Status.Value) .. " | " .. tostring(game.Players[player].PlayerFolder.DataFolder.Reputation.Value))
 			FS:UpdateLabel("Fist Strength: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.FS.Value)) .. " | " .. converttoletter(tostring(game.Players[player].PlayerFolder.Multipliers.FSMulti.Value)))
 			BT:UpdateLabel("Body Toughness: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.BT.Value)) .. " | " .. converttoletter(tostring(game.Players[player].PlayerFolder.Multipliers.BTMulti.Value)))
 			WS:UpdateLabel("Walk Speed: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.WS.Value)) .. " | " .. converttoletter(tostring(game.Players[player].PlayerFolder.Multipliers.WSMulti.Value)))
 			JF:UpdateLabel("Jump Power: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.JF.Value)) .. " | " .. converttoletter(tostring(game.Players[player].PlayerFolder.Multipliers.JFMulti.Value)))
 			PP:UpdateLabel("Psychic Power: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.PP.Value)) .. " | " .. converttoletter(tostring(game.Players[player].PlayerFolder.Multipliers.PPMulti.Value)))
-			TotalPower:UpdateLabel("Total Power: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.TotalPower.Value)))
 			Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.Tokens.Value)))
-			if game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 10 then
-				Quest:UpdateLabel("Quest: 50Sx FS | 50Sx BT | 50Sx PP | 1000h")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 9 then
-				Quest:UpdateLabel("Quest: 50Qi Total Power")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 8 then
-				Quest:UpdateLabel("Quest: 1Qi FS | 1Qi BT | 1Qi PP")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 7 then
-				Quest:UpdateLabel("Quest: 1T PP")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 6 then
-				Quest:UpdateLabel("Quest: 1B FS | 1B BT | 1B PP")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 5 then
-				Quest:UpdateLabel("Quest: 50k WS | 50k JF")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 4 then
-				Quest:UpdateLabel("Quest: 10k FS")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 3 then
-				Quest:UpdateLabel("Quest: 100k PP")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 2 then
-				Quest:UpdateLabel("Quest: 2k WS | 2k JF")
-			elseif game.Players[player].PlayerFolder.QuestData.MainQuest.Quest.Value == 1 then
-				Quest:UpdateLabel("Quest: 2k FS | 2k BT")
-			end
-			TP:UpdateLabel("Time Played: " .. converttodays(tostring(game.Players[player].PlayerFolder.DataFolder.TimePlayed.Value)) .. " | " .. converttohours(tostring(game.Players[player].PlayerFolder.DataFolder.TimePlayed.Value)))
+			TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationY))
 		end
 	end
 end)
