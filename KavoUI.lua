@@ -312,7 +312,7 @@ function Kavo.CreateLib(kavName, themeList)
     MainSide.BackgroundColor3 = themeList.Header
     Objects[MainSide] = "Header"
     MainSide.Position = UDim2.new(-7.4505806e-09, 0, 0.0911949649, 0)
-    MainSide.Size = UDim2.new(0, 149, 0, 289)
+    MainSide.Size = UDim2.new(0, 149, 0, 300)
 
     sideCorner.CornerRadius = UDim.new(0, 4)
     sideCorner.Name = "sideCorner"
@@ -324,7 +324,7 @@ function Kavo.CreateLib(kavName, themeList)
     Objects[coverup_2] = "Header"
     coverup_2.BorderSizePixel = 0
     coverup_2.Position = UDim2.new(0.949939311, 0, 0, 0)
-    coverup_2.Size = UDim2.new(0, 7, 0, 250)
+    coverup_2.Size = UDim2.new(0, 7, 0, 289)
 
     tabFrames.Name = "tabFrames"
     tabFrames.Parent = MainSide
