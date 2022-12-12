@@ -212,7 +212,19 @@ local PLRESET = StatCheck:NewButton("Reset Player List","Update player list", fu
 	UpdatePlayerList()
 end)
 
+player = tostring(MyPlr)
+spawn(function()
+	LocationX = round(game.Players[player].Character.HumanoidRootPart.Position.x, 0)
+	LocationY = round(game.Players[player].Character.HumanoidRootPart.Position.y, 0)
+	LocationZ = round(game.Players[player].Character.HumanoidRootPart.Position.z, 0)
+	location = Vector3.new(round(game.Players[player].Character.HumanoidRootPart.Position.x, 0), round(game.Players[player].Character.HumanoidRootPart.Position.y, 0), round(game.Players[player].Character.HumanoidRootPart.Position.z, 0))
+end)
+
+local PTP = StatCheck:NewButton("Player coords: ","Teleports you to choosen player", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = location
+end)
 local PN = StatCheck:NewLabel("Player Name: ")
+local HP = StatCheck:NewLabel("Player Health: ")
 local rep = StatCheck:NewLabel("Reputation")
 local FS = StatCheck:NewLabel("Fist Strength: ")
 local BT = StatCheck:NewLabel("Body Toughness: ")
@@ -224,12 +236,13 @@ local Quest = StatCheck:NewLabel("Quest: ")
 local Tokens = StatCheck:NewLabel("Tokens: ")
 local TP = StatCheck:NewLabel("Time Player: ")
 
-player = tostring(MyPlr)
 spawn(function()
 	while true do
 		while player ~= "" do
 			wait(0.5)
+			PTP:UpdateButton("Player coords: " .. tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
 			PN:UpdateLabel("Player Name: " .. player)
+			HP:UpdateLabel("Player Health: " .. converttoletter(tostring(game.workspace[player].Humanoid.Health)) .. "/" .. converttoletter(tostring(game.workspace[player].Humanoid.MaxHealth)))
 			rep:UpdateLabel("Reputation: " .. tostring(game.Players[player].leaderstats.Status.Value) .. " | " .. tostring(game.Players[player].PlayerFolder.DataFolder.Reputation.Value))
 			FS:UpdateLabel("Fist Strength: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.FS.Value)) .. " | " .. converttoletter(tostring(game.Players[player].PlayerFolder.Multipliers.FSMulti.Value)))
 			BT:UpdateLabel("Body Toughness: " .. converttoletter(tostring(game.Players[player].PlayerFolder.DataFolder.BT.Value)) .. " | " .. converttoletter(tostring(game.Players[player].PlayerFolder.Multipliers.BTMulti.Value)))
