@@ -1,3 +1,8 @@
+while not game:IsLoaded() do
+	wait(0.25)
+    game.Loaded:Wait()
+end
+
 -- Aliases
 local plr = game:GetService("Players").LocalPlayer
 local char = plr.Character
