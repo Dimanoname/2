@@ -228,10 +228,10 @@ spawn(function()
 	end
 end)
 
-
 local TpPlayer = Funcs:NewButton("Player coords: ","Teleports you to choosen player", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(LocationX, LocationY,  LocationZ)
 end) 
+
 local PN = StatCheck:NewLabel("Player Name: ")
 local HP = StatCheck:NewLabel("Player Health: ")
 local FS = StatCheck:NewLabel("Fist Strength: ")
