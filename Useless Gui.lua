@@ -853,14 +853,14 @@ spawn(function()
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 100e15 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 150e15 then
 				workspace[plr.Name].HumanoidRootPart.Anchored = false
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1805, 45, 653)
 				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 5e15 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 10e15 then
 				workspace[plr.Name].HumanoidRootPart.Anchored = false
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-245, 33, -404)
 				wait(1)
