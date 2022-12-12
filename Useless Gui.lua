@@ -370,6 +370,7 @@ Psyc:NewToggle("Psychic Power", "Toggling Psychic Farm", function(farmpsychic)
 	if farmpsychic then
 		farmpsychicactive = true
 		deathreturnactive = true
+		wait(1)
 		workspace[plr.Name].HumanoidRootPart.Anchored = true
 	else
 		farmpsychicactive = false
@@ -836,79 +837,79 @@ spawn(function()
 		if farmbodyactive and game.Players.LocalPlayer.Character:WaitForChild("Humanoid") then
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 70e18 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1823, 59, 802)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 1e18 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1810, 58, 756)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 100e15 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1805, 45, 653)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 5e15 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-245, 33, -404)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 1e15 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-78, 33, -412)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 50e12 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-82, 37, -370)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 500e09 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-80, 37, -325)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 50e09 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-248, 38, -350)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 500e06 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-242, 38, -320)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 50e06 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2440.62, 535, -2338.16)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 500e03 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-502, 262, -1255)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 50e03 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-1479, 30, 1108)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false 
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.PlayerFolder.DataFolder.BT.Value)) >= 5e02 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-225, 35, -288)
-				wait(0.5)
+				wait(1)
 				workspace[plr.Name].HumanoidRootPart.Anchored = true
 				farmpsychicactive = false
 				farmfistactive = false  
