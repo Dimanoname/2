@@ -160,10 +160,13 @@ local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Diman
 local Window = Library.CreateLib("Useless GUI | SPTS: Custom II", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
 -- Info Tab
 local Info = Window:NewTab("Info")
-local Creator = Info:NewSection("Creator:")
-Creator:NewLabel("Discord: Useless#3770")
-local ToggleGui = Info:NewSection("Toggle UI")
-ToggleGui:NewKeybind("Toggle UI", "Toggle UI", Enum.KeyCode.RightControl, function()
+local InfoSec = Info:NewSection("Info:")
+InfoSec:NewLabel("Creator's Discord: Useless#3770")
+InfoSec:NewLabel("This gui was created with KavoUI")
+InfoSec:NewLabel("If you want to create the same - learn it")
+InfoSec:NewLabel("If you found some bugs, send them to my discrod")
+local KeyBinds = Info:NewSection("Keybinds")
+KeyBinds:NewKeybind("Toggle UI", "Toggle UI", Enum.KeyCode.RightControl, function()
 	Library:ToggleUI()
 end)
 -- Misc Tab
