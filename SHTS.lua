@@ -933,7 +933,7 @@ spawn(function()
 	while true do
 		wait(0.25)
 		while farmagilityactive do
-			wait()
+			wait(0.1)
 			game:GetService("ReplicatedStorage").remotes.train:FireServer("agility")
 		end
 	end
