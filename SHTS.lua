@@ -157,7 +157,7 @@ function converttodays(mins)
 end
 -- Main info
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/2/main/KavoUI.lua"))()
-local Window = Library.CreateLib("Useless GUI | SPTS: Custom II", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
+local Window = Library.CreateLib("Useless GUI | SHTS", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
 -- Info Tab
 local Info = Window:NewTab("Info")
 local InfoSec = Info:NewSection("Info:")
