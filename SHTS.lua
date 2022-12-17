@@ -713,7 +713,6 @@ end)
 spawn(function()
 	while true do
 		while farmfistactive and not playerdied do
-			wait(1)
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e39 then
 				farmpsychicactive = false
 				farmbodyactive = false 
@@ -787,7 +786,6 @@ end)
 spawn(function()
 	while true do
 		while farmbodyactive and not playerdied do
-			wait(1)
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e39 then
 				farmpsychicactive = false
 				farmfistactive = false 
@@ -861,7 +859,6 @@ end)
 spawn(function()
 	while true do
 		while farmpsychicactive and not playerdied do
-			wait(1)
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e39 then
 				farmbodyactive = false
 				farmfistactive = false 
@@ -936,6 +933,7 @@ spawn(function()
 	while true do
 		wait(0.25)
 		while farmagilityactive do
+			wait()
 			game:GetService("ReplicatedStorage").remotes.train:FireServer("agility")
 		end
 	end
