@@ -274,10 +274,10 @@ spawn(function()
 			wait(0.5)
 			PN:UpdateLabel("Player Name: " .. player)
 			HP:UpdateLabel("Reputation: " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
-			ST:UpdateLabel("Strength: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data["Strength Multi"].Value)))
-			DR:UpdateLabel("Durability: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data["Endurance Multi"].Value)))
-			PS:UpdateLabel("Psychic: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data["Psychic Multi"].Value)))
-			AG:UpdateLabel("Agility: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data["Agility Multi"].Value)))
+			ST:UpdateLabel("Strength: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Strength Multi"].Value)))
+			DR:UpdateLabel("Durability: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Endurance Multi"].Value)))
+			PS:UpdateLabel("Psychic: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Psychic Multi"].Value)))
+			AG:UpdateLabel("Agility: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Agility Multi"].Value)))
 			Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
 			Status:UpdateLabel("Kill Streak: " ..tostring(game.Players[player].leaderstats["Kill Streak"].Value) .. " | " .. "Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
 			TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationY))
@@ -287,8 +287,8 @@ end)
 -- Farm Tab
 local Farm = Window:NewTab("Auto Farm")
 
-local Fist = Farm:NewSection("Fist Farm")
-Fist:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
+local Power = Farm:NewSection("Power Farm")
+Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	if farmfist then
 		farmfistactive = true
 		deathreturnactive = true
@@ -303,8 +303,7 @@ Fist:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	end
 end)
 
-local Body = Farm:NewSection("Body Farm")
-Body:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
+Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
 	if farmbody then
 		farmbodyactive = true
 		farmbodystate = true
@@ -319,15 +318,14 @@ Body:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
 	end
 end)
 
-local Psyc = Farm:NewSection("Psychic Farm")
-Psyc:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
+Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
 	if farmpsyc then
 		farmpsychicactive = true
 		farmpsychicstate = true
 		deathreturnactive = true
 	else
 		farmpsychicactive = false
-		farmpsychicstate = true
+		farmpsychicstate = false
 		deathreturnactive = false
 		wait(1)
 		workspace[plr.Name].HumanoidRootPart.Anchored = false
@@ -335,8 +333,8 @@ Psyc:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
 	end
 end)
 
-local agility = Farm:NewSection("Agility")
-agility:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
+local Other = Farm:NewSection("Other Farm")
+Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
 	if farmagil then
 		farmagilityactive = true
 		deathreturnactive = true
@@ -349,8 +347,7 @@ agility:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
 	end
 end)
 
-local pres = Farm:NewSection("Presents")
-pres:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
+Other:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
 	if farmpres then
 		farmpresentactive = true
 		deathreturnactive = true
@@ -534,7 +531,7 @@ PPTP:NewButton("Psychic 5T (x1M)", "Teleport", function()
 end)
 
 PPTP:NewButton("Psychic 5Qa (x15M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -411)
 end)
 
 PPTP:NewButton("Psychic 1Qi (x100M)", "Teleport", function()
@@ -666,16 +663,16 @@ end
 function UpdateESP(plr)
 	local Find = CoreGui:FindFirstChild("ESP_" .. plr.Name)
 	if Find then
-		local plrStatus = game.Players[plr.Name].leaderstats.Status
-		if plrStatus.Value == "Criminal" then
+		local plrStatus = game.Players[plr.Name].leaderstats.Reputation
+		if plrStatus.Value == "Villain" then
 			Find.Frame.Names.TextColor3 = Color3.fromRGB(255, 113, 106)
-		elseif plrStatus.Value == "Lawbreaker" then
+		elseif plrStatus.Value == "Evil" then
 			Find.Frame.Names.TextColor3 = Color3.fromRGB(255, 142, 100)
 		elseif plrStatus.Value == "Guardian" then
 			Find.Frame.Names.TextColor3 = Color3.fromRGB(3, 12, 255)
-		elseif plrStatus.Value == "Protector" then
+		elseif plrStatus.Value == "Hero" then
 			Find.Frame.Names.TextColor3 = Color3.fromRGB(0, 144, 211)
-		elseif plrStatus.Value == "SuperVillian" then
+		elseif plrStatus.Value == "Supervillain" then
 			Find.Frame.Names.TextColor3 = Color3.fromRGB(187, 0, 250)
 		elseif plrStatus.Value == "Superhero" then
 			Find.Frame.Names.TextColor3 = Color3.fromRGB(209, 255, 59)
@@ -881,65 +878,65 @@ end)
 spawn(function()
 	while true do
 		while farmpsychicactive and not playerdied do
-			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e39 then
+			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e39 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 3e33 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 3e33 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-510, 22, -500)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e30 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e30 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-206, 10, 1823)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 3e27 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 3e27 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-409, 5, 1627)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 7e24 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 7e24 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1140, -139, 486)
 				wait(0.25)
 				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e21 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e21 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2295, 192, 1514)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e18 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e18 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2029, -10, 1600)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e15 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e15 then
 				farmbodyactive = false
 				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e12 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -411)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e12 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2003, -13, -638)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 100e09 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 100e09 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 92)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e09 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e09 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(701, 24, 487)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e06 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e06 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(924, -2, 680)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 100e03 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 100e03 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(265, 116, 530)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e03 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e03 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(459, 16, 337)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e02 then
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e02 then
 				farmbodyactive = false
 				farmfistactive = false 
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(319, -1, 319)
