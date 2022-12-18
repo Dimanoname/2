@@ -292,7 +292,9 @@ Fist:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	if farmfist then
 		farmfistactive = true
 		deathreturnactive = true
+		farmfiststate = true
 	else
+		farmfiststate = false
 		farmfistactive = false
 		deathreturnactive = false
 		wait(1)
@@ -305,9 +307,11 @@ local Body = Farm:NewSection("Body Farm")
 Body:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
 	if farmbody then
 		farmbodyactive = true
+		farmbodystate = true
 		deathreturnactive = true
 	else
 		farmbodyactive = false
+		farmbodystate = false
 		deathreturnactive = false
 		wait(1)
 		workspace[plr.Name].HumanoidRootPart.Anchored = false
@@ -319,9 +323,11 @@ local Psyc = Farm:NewSection("Psychic Farm")
 Psyc:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
 	if farmpsyc then
 		farmpsychicactive = true
+		farmpsychicstate = true
 		deathreturnactive = true
 	else
 		farmpsychicactive = false
+		farmpsychicstate = true
 		deathreturnactive = false
 		wait(1)
 		workspace[plr.Name].HumanoidRootPart.Anchored = false
