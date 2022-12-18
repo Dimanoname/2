@@ -384,7 +384,7 @@ FSTP:NewButton("Strength 5T (x1M)", "Teleport", function()
 end)
 
 FSTP:NewButton("Strength 5Qa (x15M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2071, 49, -408)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
 end)
 
 FSTP:NewButton("Strength 1Qi (x100M)", "Teleport", function()
@@ -512,7 +512,7 @@ PPTP:NewButton("Psychic 5T (x1M)", "Teleport", function()
 end)
 
 PPTP:NewButton("Psychic 5Qa (x15M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -413)
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
 end)
 
 PPTP:NewButton("Psychic 1Qi (x100M)", "Teleport", function()
@@ -746,7 +746,7 @@ spawn(function()
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e15 then
 				farmpsychicactive = false
 				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2071, 49, -408)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e12 then
 				farmpsychicactive = false
 				farmbodyactive = false 
@@ -892,7 +892,7 @@ spawn(function()
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e15 then
 				farmbodyactive = false
 				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -413)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e12 then
 				farmbodyactive = false
 				farmfistactive = false 
