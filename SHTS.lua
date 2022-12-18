@@ -830,7 +830,7 @@ spawn(function()
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e21 then
 				farmpsychicactive = false
 				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2402, 58, 1316)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2402, 19, 1316)
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e18 then
 				farmpsychicactive = false
 				farmfistactive = false 
