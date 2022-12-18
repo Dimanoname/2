@@ -367,9 +367,9 @@ end)
 local Teleports = Window:NewTab("Teleports")
 
 local Other = Teleports:NewSection("Others:")
-local FSTP = Teleports:NewSection("Fist Strength:")
-local BTTP = Teleports:NewSection("Body Toughness:")
-local PPTP = Teleports:NewSection("Psychic Power:")
+local FSTP = Teleports:NewSection("Strength: ")
+local BTTP = Teleports:NewSection("Endurance: ")
+local PPTP = Teleports:NewSection("Psychic: ")
 
 local SafeZone = Other:NewButton("Safe Zone", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
