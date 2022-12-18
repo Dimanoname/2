@@ -341,6 +341,20 @@ agility:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
 	end
 end)
 
+local pres = Farm:NewSection("Presents")
+pres:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
+	if farmpres then
+		farmpresentactive = true
+		deathreturnactive = true
+	else
+		farmpresentactive = false
+		deathreturnactive = false
+		wait(1)
+		workspace[plr.Name].HumanoidRootPart.Anchored = false
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
+	end
+end)
+
 -- Teleport Tab
 local Teleports = Window:NewTab("Teleports")
 
@@ -935,6 +949,35 @@ spawn(function()
 		while farmagilityactive do
 			wait(0.1)
 			game:GetService("ReplicatedStorage").remotes.train:FireServer("agility")
+		end
+	end
+end)
+
+spawn(function()
+	while true do
+		wait(0.25)
+		while farmpresentactive do
+			present = workspace.map.Presents:FindFirstChild("Present")
+			farmfiststate = farmfistactive
+			farmbodystate = farmbodyactive
+			farmpsychicstate = farmpsychicactive
+			if present then
+				presPos1 = round(present.Position.x)
+				presPos2 = round(present.Position.y)
+				presPos3 = round(present.Position.z)
+				farmfistactive = false
+				farmbodyactive = false
+				farmpsychicactive = false
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(presPos1, presPos2+3, presPos3)
+				VirtualUser:CaptureController()
+				VirtualUser:SetKeyDown(101)
+				wait(2)
+				VirtualUser:SetKeyUp(101)
+			end
+			wait(0.5)
+			farmfistactive = farmfiststate
+			farmbodyactive = farmbodystate
+			farmpsychicactive = farmpsychicstate
 		end
 	end
 end)
