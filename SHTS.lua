@@ -266,18 +266,20 @@ local DR = StatCheck:NewLabel("Durability: ")
 local PS = StatCheck:NewLabel("Phychic: ")
 local AG = StatCheck:NewLabel("Agility: ")
 local Tokens = StatCheck:NewLabel("Tokens: ")
+local Status = StatCheck:NewLabel("Kill Streak: ")
 
 spawn(function()
 	while true do
 		while player ~= "" do
 			wait(0.5)
 			PN:UpdateLabel("Player Name: " .. player)
-			HP:UpdateLabel("Player Health: " .. converttoletter(tostring(game.workspace[player].Humanoid.Health)) .. "/" .. converttoletter(tostring(game.workspace[player].Humanoid.MaxHealth)))
+			HP:UpdateLabel("Reputation: " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
 			ST:UpdateLabel("Strength: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data["Strength Multi"].Value)))
 			DR:UpdateLabel("Durability: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data["Endurance Multi"].Value)))
 			PS:UpdateLabel("Psychic: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data["Psychic Multi"].Value)))
 			AG:UpdateLabel("Agility: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data["Agility Multi"].Value)))
-			Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)))
+			Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
+			Status:UpdateLabel("Kill Streak: " ..tostring(game.Players[player].leaderstats["Kill Streak"].Value) .. " | " .. "Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
 			TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationY))
 		end
 	end
