@@ -59,8 +59,7 @@ showtopplayersspeedactive = false
 showtopplayersjumpactive = false
 showtopplayerspsychicactive = false
 settplocation = false
-playerdied = false
-deathreturnactive = false
+playerdied = fals
 resetplayerstat = false
 killplayeractive = false
 
@@ -347,7 +346,7 @@ spawn(function()
 			AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
 			Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
 			Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
-			TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationY))
+			TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
 		else
 			PN:UpdateLabel("Player: ")
 			ST:UpdateButton("Str: ")
@@ -363,74 +362,61 @@ spawn(function()
 end)
 -- Farm Tab
 local Farm = Window:NewTab("Auto Farm")
+getgenv().StrToggled = false
+getgenv().EndToggled = false
+getgenv().PsyToggled = false
 
 local Power = Farm:NewSection("Power")
-Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
+local StrTogg = Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	if farmfist then
 		farmfistactive = true
-		deathreturnactive = true
 		farmfiststate = true
+		getgenv().StrToggled = farmfist
 	else
 		farmfiststate = false
 		farmfistactive = false
-		deathreturnactive = false
-		wait(1)
-		workspace[plr.Name].HumanoidRootPart.Anchored = false
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
+		getgenv().StrToggled = farmfist
 	end
 end)
 
-Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
+local EndTogg = Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
 	if farmbody then
 		farmbodyactive = true
 		farmbodystate = true
-		deathreturnactive = true
+		getgenv().EndToggled = farmbody
 	else
 		farmbodyactive = false
 		farmbodystate = false
-		deathreturnactive = false
-		wait(1)
-		workspace[plr.Name].HumanoidRootPart.Anchored = false
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
+		getgenv().EndToggled = farmbody
 	end
 end)
 
-Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
+local PsyTogg = Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
 	if farmpsyc then
 		farmpsychicactive = true
 		farmpsychicstate = true
-		deathreturnactive = true
+		getgenv().PsyToggled = farmpsyc
 	else
 		farmpsychicactive = false
 		farmpsychicstate = false
-		deathreturnactive = false
-		wait(1)
-		workspace[plr.Name].HumanoidRootPart.Anchored = false
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
+		getgenv().PsyToggled = farmpsyc
 	end
 end)
 
 local Other = Farm:NewSection("Other")
-Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
+local AgiTogg = Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
 	if farmagil then
 		farmagilityactive = true
-		deathreturnactive = true
 	else
 		farmagilityactive = false
-		deathreturnactive = false
-		wait(1)
-		workspace[plr.Name].HumanoidRootPart.Anchored = false
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
 	end
 end)
 
 Other:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
 	if farmpres then
 		farmpresentactive = true
-		deathreturnactive = true
 	else
 		farmpresentactive = false
-		deathreturnactive = false
 		wait(1)
 		workspace[plr.Name].HumanoidRootPart.Anchored = false
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
@@ -445,7 +431,451 @@ local FSTP = Teleports:NewSection("Strength: ")
 local BTTP = Teleports:NewSection("Endurance: ")
 local PPTP = Teleports:NewSection("Psychic: ")
 
-local SafeZone = Other:NewButton("Safe Zone", "Teleport", function()
+-- ESP
+CharAddedEvent = { }
+
+Plrs.PlayerAdded:connect(function(plr)
+	UpdatePlayerList()
+	if CharAddedEvent[plr.Name] == nil then
+		CharAddedEvent[plr.Name] = plr.CharacterAdded:connect(function(char)
+			if ESPEnabled then
+				RemoveESP(plr)
+				CreateESP(plr)
+			end
+		end)
+	end
+end)
+
+Plrs.PlayerRemoving:connect(function(plr)
+	UpdatePlayerList()
+	if CharAddedEvent[plr.Name] ~= nil then
+		CharAddedEvent[plr.Name]:Disconnect()
+		CharAddedEvent[plr.Name] = nil
+	end
+	RemoveESP(plr)
+end)
+
+function CreateESP(plr)
+	if plr ~= nil then
+		local GetChar = plr.Character
+		if not GetChar then return end
+		local GetHead do
+			repeat wait() until GetChar:FindFirstChild("Head")
+		end
+		GetHead = GetChar.Head
+		
+		local bb = Instance.new("BillboardGui", CoreGui)
+		bb.Adornee = GetHead
+		bb.ExtentsOffset = Vector3.new(0, 1, 0)
+		bb.AlwaysOnTop = true
+		bb.Size = UDim2.new(0, 5, 0, 5)
+		bb.StudsOffset = Vector3.new(0, 3, 0)
+		bb.Name = "ESP_" .. plr.Name
+		
+		local frame = Instance.new("Frame", bb)
+		frame.ZIndex = 10
+		frame.BackgroundTransparency = 1
+		frame.Size = UDim2.new(1, 0, 1, 0)
+		
+		local TxtName = Instance.new("TextLabel", frame)
+		TxtName.Name = "Names"
+		TxtName.ZIndex = 10
+		TxtName.Text = plr.Name
+		TxtName.BackgroundTransparency = 1
+		TxtName.Position = UDim2.new(0, 0, 0, -45)
+		TxtName.Size = UDim2.new(1, 0, 10, 0)
+		TxtName.Font = "SourceSansBold"
+		TxtName.TextColor3 = Color3.new(0, 0, 0)
+		TxtName.TextSize = 14
+		TxtName.TextStrokeTransparency = 0.5
+		
+		local TxtDist = Instance.new("TextLabel", frame)
+		TxtDist.Name = "Dist"
+		TxtDist.ZIndex = 10
+		TxtDist.Text = ""
+		TxtDist.BackgroundTransparency = 1
+		TxtDist.Position = UDim2.new(0, 0, 0, -35)
+		TxtDist.Size = UDim2.new(1, 0, 10, 0)
+		TxtDist.Font = "SourceSansBold"
+		TxtDist.TextColor3 = Color3.new(0, 0, 0)
+		TxtDist.TextSize = 15
+		TxtDist.TextStrokeTransparency = 0.5
+
+		local TxtFist = Instance.new("TextLabel", frame)
+		TxtFist.Name = "Fist"
+		TxtFist.ZIndex = 10
+		TxtFist.Text = ""
+		TxtFist.BackgroundTransparency = 1
+		TxtFist.Position = UDim2.new(0, 0, 0, -25)
+		TxtFist.Size = UDim2.new(1, 0, 10, 0)
+		TxtFist.Font = "SourceSansBold"
+		TxtFist.TextColor3 = Color3.new(0, 0, 0)
+		TxtFist.TextSize = 15
+		TxtFist.TextStrokeTransparency = 0.5
+
+		local TxtBody = Instance.new("TextLabel", frame)
+		TxtBody.Name = "BT"
+		TxtBody.ZIndex = 10
+		TxtBody.Text = ""
+		TxtBody.BackgroundTransparency = 1
+		TxtBody.Position = UDim2.new(0, 0, 0, -15)
+		TxtBody.Size = UDim2.new(1, 0, 10, 0)
+		TxtBody.Font = "SourceSansBold"
+		TxtBody.TextColor3 = Color3.new(0, 0, 0)
+		TxtBody.TextSize = 15
+		TxtBody.TextStrokeTransparency = 0.5
+	end
+end
+
+function UpdateESP(plr)
+	local Find = CoreGui:FindFirstChild("ESP_" .. plr.Name)
+	if Find then
+		local plrStatus = game.Players[plr.Name].leaderstats.Reputation
+		if plrStatus.Value == "Villain" then
+			Find.Frame.Names.TextColor3 = Color3.fromRGB(255, 113, 106)
+		elseif plrStatus.Value == "Evil" then
+			Find.Frame.Names.TextColor3 = Color3.fromRGB(255, 142, 100)
+		elseif plrStatus.Value == "Guardian" then
+			Find.Frame.Names.TextColor3 = Color3.fromRGB(3, 12, 255)
+		elseif plrStatus.Value == "Hero" then
+			Find.Frame.Names.TextColor3 = Color3.fromRGB(0, 144, 211)
+		elseif plrStatus.Value == "Supervillain" then
+			Find.Frame.Names.TextColor3 = Color3.fromRGB(187, 0, 250)
+		elseif plrStatus.Value == "Superhero" then
+			Find.Frame.Names.TextColor3 = Color3.fromRGB(209, 255, 59)
+		else
+			Find.Frame.Names.TextColor3 = Color3.fromRGB(255, 255, 255)
+		end
+		Find.Frame.Dist.TextColor3 = Color3.new(1, 1, 1)
+		Find.Frame.Fist.TextColor3 = Color3.new(1, 1, 1)
+		Find.Frame.BT.TextColor3 = Color3.new(1, 1, 1)
+		local GetChar = plr.Character
+		if MyChar and GetChar then
+			local Find2 = MyChar:FindFirstChild("HumanoidRootPart")
+			local Find3 = GetChar:FindFirstChild("HumanoidRootPart")
+			local Find4 = GetChar:FindFirstChildOfClass("Humanoid")
+			if Find2 and Find3 then
+				local pos = Find3.Position
+				local Dist = (Find2.Position - pos).magnitude
+				if Dist > ESPLength then
+					Find.Frame.Names.Visible = false
+					Find.Frame.Dist.Visible = false
+					Find.Frame.Fist.Visible = false
+					Find.Frame.BT.Visible = false
+					return
+				else
+					Find.Frame.Names.Visible = true
+					Find.Frame.Dist.Visible = true
+					Find.Frame.Fist.Visible = true
+					Find.Frame.BT.Visible = true
+				end
+				Find.Frame.Dist.Text = "Distance: " .. string.format("%.0f", Dist)
+				if Find4 then
+					Find.Frame.Fist.Text = "Str: " ..converttoletter(string.format("%.0f", game.Players[plr.Name].data.Strength.Value))
+					Find.Frame.BT.Text = "End: " ..converttoletter(string.format("%.0f", game.Players[plr.Name].data.Endurance.Value))
+				else
+					Find.Frame.Fist.Text = ""
+					Find.Frame.BT.Text = ""
+				end
+			end
+		end
+	end
+end
+
+function RemoveESP(plr)
+	local ESP = CoreGui:FindFirstChild("ESP_" .. plr.Name)
+	if ESP then
+		ESP:Destroy()
+	end
+end
+
+game:GetService("RunService").RenderStepped:Connect(function()
+	wait(0.5)
+	if getgenv().StrToggled then
+		StrTogg:UpdateToggle("Strength: ON", true)
+	else
+		StrTogg:UpdateToggle("Strength: OFF", false)
+	end
+	wait(0.5)
+	if getgenv().EndToggled then
+		EndTogg:UpdateToggle("Endurance: ON", true)
+	else
+		EndTogg:UpdateToggle("Endurance: OFF", false)
+	end
+	wait(0.5)
+	if getgenv().PsyToggled then
+		PsyTogg:UpdateToggle("Psychic: ON", true)
+	else
+		PsyTogg:UpdateToggle("Psychic: OFF", false)
+	end
+	wait(0.5)
+end)
+
+Run:BindToRenderStep("UpdateESP", Enum.RenderPriority.Character.Value, function()
+	for _, v in next, Plrs:GetPlayers() do
+		UpdateESP(v)
+	end
+end)
+-- Farming
+
+spawn(function()
+	while true do
+		while farmfistactive and not playerdied do
+			farmpsychicactive = false
+			farmpsychicstate = false
+			farmbodyactive = false
+			farmbodystate = false 
+			EndTogg:UpdateToggle("Endurance: OFF", false)
+			PsyTogg:UpdateToggle("Psychic: OFF", false)
+			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e39 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-679, 113, -740)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 3e33 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-400, 22, -514)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e30 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580, 26, 1806)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 3e27 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-486, 5, 2034)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 7e24 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1283, -143, 653)
+				wait(0.25)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e21 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2418, 62, 1723)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e18 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2033, 25, 2036)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e15 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e12 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1982, 5, -200)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 100e09 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(468, -1, 75)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e09 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(239, -1, 816)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e06 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 363)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 100e03 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 306)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e03 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(296, -1, 314)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e02 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 298)
+			end
+			game:GetService("ReplicatedStorage").remotes.train:FireServer("strength")
+			wait(0.1)
+		end
+		wait(0.25)
+	end
+end)
+
+spawn(function()
+	while true do
+		while farmbodyactive and not playerdied do
+			farmpsychicactive = false
+			farmpsychicstate = false
+			farmfistactive = false 
+			farmfiststate = false 
+			StrTogg:UpdateToggle("Strength: OFF", false)
+			PsyTogg:UpdateToggle("Psychic: OFF", false)
+			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e39 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-587, 20, -591)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 3e33 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-546, 10, -316)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e30 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-399, 91, 1939)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 3e27 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-484, -10, 2064)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 7e24 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1214, -162, 557)
+				wait(0.25)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e21 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2402, 19, 1316)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e18 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2022, -13, 1214)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e15 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1962, 5, -318)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e12 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1906, 5, -523)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 100e09 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(412, -1, 105)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e09 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(807, -19, 1109)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e06 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249, 8, 860)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 100e03 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(146, -7, 291)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e03 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(317, 0, 363)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e02 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(346, -1, 334)
+			end
+			game:GetService("ReplicatedStorage").remotes.train:FireServer("endurance")
+			wait(0.1)
+		end
+		wait(0.25)
+	end
+end)
+
+spawn(function()
+	while true do
+		while farmpsychicactive and not playerdied do
+			farmbodyactive = false
+			farmbodystate = false
+			farmfistactive = false
+			farmfiststate = false 
+			StrTogg:UpdateToggle("Strength: OFF", false)
+			EndTogg:UpdateToggle("Endurance: OFF", false)
+			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e39 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 3e33 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-510, 22, -500)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e30 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-206, 10, 1823)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 3e27 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-409, 5, 1627)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 7e24 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1140, -139, 486)
+				wait(0.25)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e21 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2295, 192, 1514)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e18 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2029, -10, 1600)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e15 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -411)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e12 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2003, -13, -638)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 100e09 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 92)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e09 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(701, 24, 487)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e06 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(924, -2, 680)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 100e03 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(265, 116, 530)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e03 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(459, 16, 337)
+			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e02 then
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(319, -1, 319)
+			end
+			game:GetService("ReplicatedStorage").remotes.train:FireServer("psychic")
+			wait(0.1)
+		end
+		wait(0.25)
+	end
+end)
+
+spawn(function()
+	while true do
+		wait(0.25)
+		while farmagilityactive do
+			wait(0.1)
+			game:GetService("ReplicatedStorage").remotes.train:FireServer("agility")
+		end
+	end
+end)
+
+spawn(function()
+	while true do
+		wait(0.25)
+		while farmpresentactive do
+			present = workspace.map.Presents:FindFirstChild("Present")
+			farmfiststate = farmfistactive
+			farmbodystate = farmbodyactive
+			farmpsychicstate = farmpsychicactive
+			if present then
+				presPos1 = round(present.Position.x)
+				presPos2 = round(present.Position.y)
+				presPos3 = round(present.Position.z)
+				farmfistactive = false
+				farmbodyactive = false
+				farmpsychicactive = false
+				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(presPos1, presPos2+3, presPos3)
+				VirtualUser:CaptureController()
+				VirtualUser:SetKeyDown(101)
+				wait(2)
+				VirtualUser:SetKeyUp(101)
+			end
+			wait(0.5)
+			farmfistactive = farmfiststate
+			farmbodyactive = farmbodystate
+			farmpsychicactive = farmpsychicstate
+		end
+	end
+end)
+-- ServerHop
+local PlaceID = game.PlaceId
+local AllIDs = {}
+local foundAnything = ""
+local actualHour = os.date("!*t").hour
+local Deleted = false
+local File = pcall(function()
+    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+end)
+if not File then
+    table.insert(AllIDs, actualHour)
+    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+end
+function TPReturner()
+    local Site;
+    if foundAnything == "" then
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
+    else
+        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
+    end
+    local ID = ""
+    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
+        foundAnything = Site.nextPageCursor
+    end
+    local num = 0;
+    for i,v in pairs(Site.data) do
+        local Possible = true
+        ID = tostring(v.id)
+        if tonumber(v.maxPlayers) > tonumber(v.playing) then
+            for _,Existing in pairs(AllIDs) do
+                if num ~= 0 then
+                    if ID == tostring(Existing) then
+                        Possible = false
+                    end
+                else
+                    if tonumber(actualHour) ~= tonumber(Existing) then
+                        local delFile = pcall(function()
+                            delfile("NotSameServers.json")
+                            AllIDs = {}
+                            table.insert(AllIDs, actualHour)
+                        end)
+                    end
+                end
+                num = num + 1
+            end
+            if Possible == true then
+                table.insert(AllIDs, ID)
+                wait()
+                pcall(function()
+                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
+                    wait()
+                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
+                end)
+                wait(4)
+            end
+        end
+    end
+end
+
+function Teleport()
+    while wait() do
+        pcall(function()
+            TPReturner()
+            if foundAnything ~= "" then
+                TPReturner()
+            end
+        end)
+    end
+end
+
+-- Teleports
+
+Other:NewButton("Safe Zone", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
 end)
 
@@ -640,495 +1070,3 @@ end)
 PPTP:NewButton("Psychic 1Dd (x50Qi)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
 end)
-
--- ESP
-CharAddedEvent = { }
-
-Plrs.PlayerAdded:connect(function(plr)
-	UpdatePlayerList()
-	if CharAddedEvent[plr.Name] == nil then
-		CharAddedEvent[plr.Name] = plr.CharacterAdded:connect(function(char)
-			if ESPEnabled then
-				RemoveESP(plr)
-				CreateESP(plr)
-			end
-		end)
-	end
-end)
-
-Plrs.PlayerRemoving:connect(function(plr)
-	UpdatePlayerList()
-	if CharAddedEvent[plr.Name] ~= nil then
-		CharAddedEvent[plr.Name]:Disconnect()
-		CharAddedEvent[plr.Name] = nil
-	end
-	RemoveESP(plr)
-end)
-
-function CreateESP(plr)
-	if plr ~= nil then
-		local GetChar = plr.Character
-		if not GetChar then return end
-		local GetHead do
-			repeat wait() until GetChar:FindFirstChild("Head")
-		end
-		GetHead = GetChar.Head
-		
-		local bb = Instance.new("BillboardGui", CoreGui)
-		bb.Adornee = GetHead
-		bb.ExtentsOffset = Vector3.new(0, 1, 0)
-		bb.AlwaysOnTop = true
-		bb.Size = UDim2.new(0, 5, 0, 5)
-		bb.StudsOffset = Vector3.new(0, 3, 0)
-		bb.Name = "ESP_" .. plr.Name
-		
-		local frame = Instance.new("Frame", bb)
-		frame.ZIndex = 10
-		frame.BackgroundTransparency = 1
-		frame.Size = UDim2.new(1, 0, 1, 0)
-		
-		local TxtName = Instance.new("TextLabel", frame)
-		TxtName.Name = "Names"
-		TxtName.ZIndex = 10
-		TxtName.Text = plr.Name
-		TxtName.BackgroundTransparency = 1
-		TxtName.Position = UDim2.new(0, 0, 0, -45)
-		TxtName.Size = UDim2.new(1, 0, 10, 0)
-		TxtName.Font = "SourceSansBold"
-		TxtName.TextColor3 = Color3.new(0, 0, 0)
-		TxtName.TextSize = 14
-		TxtName.TextStrokeTransparency = 0.5
-		
-		local TxtDist = Instance.new("TextLabel", frame)
-		TxtDist.Name = "Dist"
-		TxtDist.ZIndex = 10
-		TxtDist.Text = ""
-		TxtDist.BackgroundTransparency = 1
-		TxtDist.Position = UDim2.new(0, 0, 0, -35)
-		TxtDist.Size = UDim2.new(1, 0, 10, 0)
-		TxtDist.Font = "SourceSansBold"
-		TxtDist.TextColor3 = Color3.new(0, 0, 0)
-		TxtDist.TextSize = 15
-		TxtDist.TextStrokeTransparency = 0.5
-
-		local TxtFist = Instance.new("TextLabel", frame)
-		TxtFist.Name = "Fist"
-		TxtFist.ZIndex = 10
-		TxtFist.Text = ""
-		TxtFist.BackgroundTransparency = 1
-		TxtFist.Position = UDim2.new(0, 0, 0, -25)
-		TxtFist.Size = UDim2.new(1, 0, 10, 0)
-		TxtFist.Font = "SourceSansBold"
-		TxtFist.TextColor3 = Color3.new(0, 0, 0)
-		TxtFist.TextSize = 15
-		TxtFist.TextStrokeTransparency = 0.5
-
-		local TxtBody = Instance.new("TextLabel", frame)
-		TxtBody.Name = "BT"
-		TxtBody.ZIndex = 10
-		TxtBody.Text = ""
-		TxtBody.BackgroundTransparency = 1
-		TxtBody.Position = UDim2.new(0, 0, 0, -15)
-		TxtBody.Size = UDim2.new(1, 0, 10, 0)
-		TxtBody.Font = "SourceSansBold"
-		TxtBody.TextColor3 = Color3.new(0, 0, 0)
-		TxtBody.TextSize = 15
-		TxtBody.TextStrokeTransparency = 0.5
-	end
-end
-
-function UpdateESP(plr)
-	local Find = CoreGui:FindFirstChild("ESP_" .. plr.Name)
-	if Find then
-		local plrStatus = game.Players[plr.Name].leaderstats.Reputation
-		if plrStatus.Value == "Villain" then
-			Find.Frame.Names.TextColor3 = Color3.fromRGB(255, 113, 106)
-		elseif plrStatus.Value == "Evil" then
-			Find.Frame.Names.TextColor3 = Color3.fromRGB(255, 142, 100)
-		elseif plrStatus.Value == "Guardian" then
-			Find.Frame.Names.TextColor3 = Color3.fromRGB(3, 12, 255)
-		elseif plrStatus.Value == "Hero" then
-			Find.Frame.Names.TextColor3 = Color3.fromRGB(0, 144, 211)
-		elseif plrStatus.Value == "Supervillain" then
-			Find.Frame.Names.TextColor3 = Color3.fromRGB(187, 0, 250)
-		elseif plrStatus.Value == "Superhero" then
-			Find.Frame.Names.TextColor3 = Color3.fromRGB(209, 255, 59)
-		else
-			Find.Frame.Names.TextColor3 = Color3.fromRGB(255, 255, 255)
-		end
-		Find.Frame.Dist.TextColor3 = Color3.new(1, 1, 1)
-		Find.Frame.Fist.TextColor3 = Color3.new(1, 1, 1)
-		Find.Frame.BT.TextColor3 = Color3.new(1, 1, 1)
-		local GetChar = plr.Character
-		if MyChar and GetChar then
-			local Find2 = MyChar:FindFirstChild("HumanoidRootPart")
-			local Find3 = GetChar:FindFirstChild("HumanoidRootPart")
-			local Find4 = GetChar:FindFirstChildOfClass("Humanoid")
-			if Find2 and Find3 then
-				local pos = Find3.Position
-				local Dist = (Find2.Position - pos).magnitude
-				if Dist > ESPLength then
-					Find.Frame.Names.Visible = false
-					Find.Frame.Dist.Visible = false
-					Find.Frame.Fist.Visible = false
-					Find.Frame.BT.Visible = false
-					return
-				else
-					Find.Frame.Names.Visible = true
-					Find.Frame.Dist.Visible = true
-					Find.Frame.Fist.Visible = true
-					Find.Frame.BT.Visible = true
-				end
-				Find.Frame.Dist.Text = "Distance: " .. string.format("%.0f", Dist)
-				if Find4 then
-					Find.Frame.Fist.Text = "Str: " ..converttoletter(string.format("%.0f", game.Players[plr.Name].data.Strength.Value))
-					Find.Frame.BT.Text = "End: " ..converttoletter(string.format("%.0f", game.Players[plr.Name].data.Endurance.Value))
-				else
-					Find.Frame.Fist.Text = ""
-					Find.Frame.BT.Text = ""
-				end
-			end
-		end
-	end
-end
-
-function RemoveESP(plr)
-	local ESP = CoreGui:FindFirstChild("ESP_" .. plr.Name)
-	if ESP then
-		ESP:Destroy()
-	end
-end
-
-Run:BindToRenderStep("UpdateESP", Enum.RenderPriority.Character.Value, function()
-	for _, v in next, Plrs:GetPlayers() do
-		UpdateESP(v)
-	end
-end)
--- Farming
-
-spawn(function()
-	while true do
-		while farmfistactive and not playerdied do
-			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e39 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-679, 113, -740)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 3e33 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-400, 22, -514)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e30 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580, 26, 1806)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 3e27 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-486, 5, 2034)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 7e24 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1283, -143, 653)
-				wait(0.25)
-				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e21 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2418, 62, 1723)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e18 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2033, 25, 2036)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e15 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e12 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1982, 5, -200)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 100e09 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(468, -1, 75)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e09 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(239, -1, 816)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e06 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 363)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 100e03 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 306)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 5e03 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(296, -1, 314)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e02 then
-				farmpsychicactive = false
-				farmbodyactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 298)
-			end
-			game:GetService("ReplicatedStorage").remotes.train:FireServer("strength")
-			wait(0.25)
-		end
-		wait(0.5)
-	end
-end)
-
-spawn(function()
-	while true do
-		while farmbodyactive and not playerdied do
-			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e39 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-587, 20, -591)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 3e33 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-546, 10, -316)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e30 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-399, 91, 1939)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 3e27 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-484, -10, 2064)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 7e24 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1214, -162, 557)
-				wait(0.25)
-				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e21 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2402, 19, 1316)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e18 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2022, -13, 1214)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e15 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1962, 5, -318)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e12 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1906, 5, -523)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 100e09 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(412, -1, 105)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e09 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(807, -19, 1109)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e06 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249, 8, 860)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 100e03 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(146, -7, 291)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 5e03 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(317, 0, 363)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e02 then
-				farmpsychicactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(346, -1, 334)
-			end
-			game:GetService("ReplicatedStorage").remotes.train:FireServer("endurance")
-			wait(0.25)
-		end
-		wait(0.5)
-	end
-end)
-
-spawn(function()
-	while true do
-		while farmpsychicactive and not playerdied do
-			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e39 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 3e33 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-510, 22, -500)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e30 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-206, 10, 1823)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 3e27 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-409, 5, 1627)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 7e24 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1140, -139, 486)
-				wait(0.25)
-				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e21 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2295, 192, 1514)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e18 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2029, -10, 1600)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e15 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -411)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e12 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2003, -13, -638)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 100e09 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 92)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e09 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(701, 24, 487)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e06 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(924, -2, 680)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 100e03 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(265, 116, 530)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 5e03 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(459, 16, 337)
-			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e02 then
-				farmbodyactive = false
-				farmfistactive = false 
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(319, -1, 319)
-			end
-			game:GetService("ReplicatedStorage").remotes.train:FireServer("psychic")
-			wait(0.25)
-		end
-		wait(0.5)
-	end
-end)
-
-spawn(function()
-	while true do
-		wait(0.25)
-		while farmagilityactive do
-			wait(0.1)
-			game:GetService("ReplicatedStorage").remotes.train:FireServer("agility")
-		end
-	end
-end)
-
-spawn(function()
-	while true do
-		wait(0.25)
-		while farmpresentactive do
-			present = workspace.map.Presents:FindFirstChild("Present")
-			farmfiststate = farmfistactive
-			farmbodystate = farmbodyactive
-			farmpsychicstate = farmpsychicactive
-			if present then
-				presPos1 = round(present.Position.x)
-				presPos2 = round(present.Position.y)
-				presPos3 = round(present.Position.z)
-				farmfistactive = false
-				farmbodyactive = false
-				farmpsychicactive = false
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(presPos1, presPos2+3, presPos3)
-				VirtualUser:CaptureController()
-				VirtualUser:SetKeyDown(101)
-				wait(2)
-				VirtualUser:SetKeyUp(101)
-			end
-			wait(0.5)
-			farmfistactive = farmfiststate
-			farmbodyactive = farmbodystate
-			farmpsychicactive = farmpsychicstate
-		end
-	end
-end)
--- ServerHop
-local PlaceID = game.PlaceId
-local AllIDs = {}
-local foundAnything = ""
-local actualHour = os.date("!*t").hour
-local Deleted = false
-local File = pcall(function()
-    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
-end)
-if not File then
-    table.insert(AllIDs, actualHour)
-    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-end
-function TPReturner()
-    local Site;
-    if foundAnything == "" then
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
-    else
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
-    end
-    local ID = ""
-    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
-        foundAnything = Site.nextPageCursor
-    end
-    local num = 0;
-    for i,v in pairs(Site.data) do
-        local Possible = true
-        ID = tostring(v.id)
-        if tonumber(v.maxPlayers) > tonumber(v.playing) then
-            for _,Existing in pairs(AllIDs) do
-                if num ~= 0 then
-                    if ID == tostring(Existing) then
-                        Possible = false
-                    end
-                else
-                    if tonumber(actualHour) ~= tonumber(Existing) then
-                        local delFile = pcall(function()
-                            delfile("NotSameServers.json")
-                            AllIDs = {}
-                            table.insert(AllIDs, actualHour)
-                        end)
-                    end
-                end
-                num = num + 1
-            end
-            if Possible == true then
-                table.insert(AllIDs, ID)
-                wait()
-                pcall(function()
-                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-                    wait()
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
-                end)
-                wait(4)
-            end
-        end
-    end
-end
-
-function Teleport()
-    while wait() do
-        pcall(function()
-            TPReturner()
-            if foundAnything ~= "" then
-                TPReturner()
-            end
-        end)
-    end
-end
