@@ -77,25 +77,25 @@ end
 function converttoletter(num)
 	if num / 1e57 >=1 then
 		newnum = num / 1e57
-		return round(newnum, 3).. "OcDe"
+		return round(newnum, 3).. "Ocd"
 	elseif num / 1e54 >=1 then
 		newnum = num / 1e54
-		return round(newnum, 3).. "SpDe"
+		return round(newnum, 3).. "Spd"
 	elseif num / 1e51 >=1 then
 		newnum = num / 1e51
-		return round(newnum, 3).. "SxDe"
+		return round(newnum, 3).. "Sxd"
 	elseif num / 1e48 >=1 then
 		newnum = num / 1e48
-		return round(newnum, 3).. "QiDe"
+		return round(newnum, 3).. "Qid"
 	elseif num / 1e45 >=1 then
 		newnum = num / 1e45
-		return round(newnum, 3).. "QaDe"
+		return round(newnum, 3).. "Qad"
 	elseif num / 1e42 >=1 then
 		newnum = num / 1e42
-		return round(newnum, 3).. "TDe"
+		return round(newnum, 3).. "Td"
 	elseif num / 1e39 >=1 then
 		newnum = num / 1e39
-		return round(newnum, 3).. "DDe"
+		return round(newnum, 3).. "Dd"
 	elseif num / 1e36 >=1 then
 		newnum = num / 1e36
 		return round(newnum, 3).. "Un"
@@ -219,6 +219,7 @@ local Plas = Pls:NewSection("Player list:")
 
 PlayerNames = {}
 local PL = Plas:NewDropdown("Player list","List of players", PlayerNames, function(nick)
+	player = MyPlr
 	local check = Plrs:WaitForChild(nick)
 	print(tostring(check) .. " was found.")
 	player = nick
@@ -270,8 +271,7 @@ local Status = StatCheck:NewLabel("Kill Streak: ")
 
 spawn(function()
 	while true do
-		while player ~= "" do
-			wait(0.5)
+		if player ~= "" then
 			PN:UpdateLabel("Player Name: " .. player)
 			HP:UpdateLabel("Reputation: " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
 			ST:UpdateLabel("Strength: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Strength Multi"].Value)))
@@ -281,7 +281,18 @@ spawn(function()
 			Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
 			Status:UpdateLabel("Kill Streak: " ..tostring(game.Players[player].leaderstats["Kill Streak"].Value) .. " | " .. "Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
 			TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationY))
+		else
+			PN:UpdateLabel("Player Name: ")
+			HP:UpdateLabel("Reputation: ")
+			ST:UpdateLabel("Strength: ")
+			DR:UpdateLabel("Endurance: ")
+			PS:UpdateLabel("Psychic: ")
+			AG:UpdateLabel("Agility: ")
+			Tokens:UpdateLabel("Tokens: ")
+			Status:UpdateLabel("Kill Streak: " .. " | " .. "Rank: " .. " | " .. "Fuse: ")
+			TpPlayer:UpdateButton("Player coords: ")
 		end
+		wait(0.25)
 	end
 end)
 -- Farm Tab
