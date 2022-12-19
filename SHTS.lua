@@ -260,36 +260,102 @@ local TpPlayer = Funcs:NewButton("Player coords: ","Teleports you to choosen pla
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(LocationX, LocationY,  LocationZ)
 end) 
 
-local PN = StatCheck:NewLabel("Player Name: ")
-local HP = StatCheck:NewLabel("Player Health: ")
-local ST = StatCheck:NewLabel("Strength: ")
-local DR = StatCheck:NewLabel("Endurance: ")
-local PS = StatCheck:NewLabel("Phychic: ")
-local AG = StatCheck:NewLabel("Agility: ")
+local PN = StatCheck:NewLabel("Player: ")
+local ST = StatCheck:NewButton("Strength: ","Multiply", function()
+	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Strength")
+end)
+local DR = StatCheck:NewButton("Endurance: ","Multiply", function()
+	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Endurance")
+end)
+local PS = StatCheck:NewButton("Phychic: ","Multiply", function()
+	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Psychic")
+end)
+local AG = StatCheck:NewButton("Agility: ","Multiply", function()
+	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Agility")
+end)
 local Tokens = StatCheck:NewLabel("Tokens: ")
-local Status = StatCheck:NewLabel("Kill Streak: ")
+local Status = StatCheck:NewLabel("Rank: ")
+
+spawn(function()
+	while true do
+		wait(180)
+		game:GetService("ReplicatedStorage").remotes.Fuse:InvokeServer()
+		wait(0.1)
+		game:GetService("ReplicatedStorage").remotes.rankup:InvokeServer()
+	end
+end)
+
+spawn(function()
+	while true do
+		PlrStrMult = tonumber(game.Players[player].data["Strength Multi"].Value)
+		PlrEndMult = tonumber(game.Players[player].data["Endurance Multi"].Value)
+		PlrPsyMult = tonumber(game.Players[player].data["Psychic Multi"].Value)
+		PlrAgiMult = tonumber(game.Players[player].data["Agility Multi"].Value)
+		PlrRankMult = tonumber(game.Players[player].data.RankMulti.Value)
+		PlrFuseMult = tonumber(game.Players[player].data.FusionMulti.Value)
+		if game.Players[player].Elements.EquippedElement.Value == None then
+			PlrEleMult= 1
+		elseif game.Players[player].Elements.EquippedElement.Value == "Fire" then
+			PlrEleMult= 1.5
+		elseif game.Players[player].Elements.EquippedElement.Value == "Water" then
+			PlrEleMult= 2
+		elseif game.Players[player].Elements.EquippedElement.Value == "Ice" then
+			PlrEleMult= 3.5
+		elseif game.Players[player].Elements.EquippedElement.Value == "Earth" then
+			PlrEleMult= 4
+		elseif game.Players[player].Elements.EquippedElement.Value == "Electricity" then
+			PlrEleMult= 3
+		elseif game.Players[player].Elements.EquippedElement.Value == "Gold" then
+			PlrEleMult= 6
+		elseif game.Players[player].Elements.EquippedElement.Value == "Wind" then
+			PlrEleMult= 5
+		elseif game.Players[player].Elements.EquippedElement.Value == "Time" then
+			PlrEleMult= 3
+		elseif game.Players[player].Elements.EquippedElement.Value == "Plasma" then
+			PlrEleMult= 20
+		elseif game.Players[player].Elements.EquippedElement.Value == "Darkness" then
+			PlrEleMult= 1
+		elseif game.Players[player].Elements.EquippedElement.Value == "Light" then
+			PlrEleMult= 1
+		elseif game.Players[player].Elements.EquippedElement.Value == "Snow" then
+			PlrEleMult= 2.5
+		elseif game.Players[player].Elements.EquippedElement.Value == "Christmas" then
+			PlrEleMult= 5
+		elseif game.Players[player].Elements.EquippedElement.Value == "Perma-ice" then
+			PlrEleMult= 1.25
+		elseif game.Players[player].Elements.EquippedElement.Value == "Snowflake" then
+			PlrEleMult= 2
+		elseif game.Players[player].Elements.EquippedElement.Value == "Holly" then
+			PlrEleMult= 10
+		end
+		if game.Players[player].data["x2PowerTimer"].Value >= 1 then
+			PlrGPMult = 2
+		elseif game.Players[player].data["x2PowerTimer"].Value == 0 then
+			PlrGPMult = 1
+		end
+		wait(0.25)
+	end
+end)
 
 spawn(function()
 	while true do
 		if player ~= "" then
-			PN:UpdateLabel("Player Name: " .. player)
-			HP:UpdateLabel("Reputation: " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
-			ST:UpdateLabel("Strength: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Strength Multi"].Value)))
-			DR:UpdateLabel("Endurance: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Endurance Multi"].Value)))
-			PS:UpdateLabel("Psychic: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Psychic Multi"].Value)))
-			AG:UpdateLabel("Agility: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(game.Players[player].data["Agility Multi"].Value)))
+			PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
+			ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
+			DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
+			PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
+			AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
 			Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
-			Status:UpdateLabel("Kill Streak: " ..tostring(game.Players[player].leaderstats["Kill Streak"].Value) .. " | " .. "Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
+			Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
 			TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationY))
 		else
-			PN:UpdateLabel("Player Name: ")
-			HP:UpdateLabel("Reputation: ")
-			ST:UpdateLabel("Strength: ")
-			DR:UpdateLabel("Endurance: ")
-			PS:UpdateLabel("Psychic: ")
-			AG:UpdateLabel("Agility: ")
+			PN:UpdateLabel("Player: ")
+			ST:UpdateButton("Str: ")
+			DR:UpdateButton("End: ")
+			PS:UpdateButton("Psy: ")
+			AG:UpdateButton("Agi: ")
 			Tokens:UpdateLabel("Tokens: ")
-			Status:UpdateLabel("Kill Streak: " .. " | " .. "Rank: " .. " | " .. "Fuse: ")
+			Status:UpdateLabel("Rank: " .. " | " .. "Fuse: ")
 			TpPlayer:UpdateButton("Player coords: ")
 		end
 		wait(0.25)
@@ -298,7 +364,7 @@ end)
 -- Farm Tab
 local Farm = Window:NewTab("Auto Farm")
 
-local Power = Farm:NewSection("Power Farm")
+local Power = Farm:NewSection("Power")
 Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	if farmfist then
 		farmfistactive = true
@@ -344,7 +410,7 @@ Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
 	end
 end)
 
-local Other = Farm:NewSection("Other Farm")
+local Other = Farm:NewSection("Other")
 Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
 	if farmagil then
 		farmagilityactive = true
@@ -807,7 +873,7 @@ spawn(function()
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 298)
 			end
 			game:GetService("ReplicatedStorage").remotes.train:FireServer("strength")
-			wait(0.1)
+			wait(0.25)
 		end
 		wait(0.5)
 	end
@@ -880,7 +946,7 @@ spawn(function()
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(346, -1, 334)
 			end
 			game:GetService("ReplicatedStorage").remotes.train:FireServer("endurance")
-			wait(0.1)
+			wait(0.25)
 		end
 		wait(0.5)
 	end
@@ -953,7 +1019,7 @@ spawn(function()
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(319, -1, 319)
 			end
 			game:GetService("ReplicatedStorage").remotes.train:FireServer("psychic")
-			wait(0.1)
+			wait(0.25)
 		end
 		wait(0.5)
 	end
@@ -996,48 +1062,6 @@ spawn(function()
 			farmpsychicactive = farmpsychicstate
 		end
 	end
-end)
--- Return On Death
-local player = game:GetService("Players").LocalPlayer
-
-spawn(function()
-	while true do
-		while deathreturnactive do
-			if playgui.Enabled == true then
-				repeat playgui.Enabled = false until playgui.Enabled == false
-	    	end
-			wait(0.5)
-			player.Character.Humanoid.Died:connect(function()
-				playerdied = true
-			end)
-			if not playerdied then
-				wait(1)
-				lastlocationx = game.Players.LocalPlayer.Character.HumanoidRootPart.Position.x
-				lastlocationy = game.Players.LocalPlayer.Character.HumanoidRootPart.Position.y
-				lastlocationz = game.Players.LocalPlayer.Character.HumanoidRootPart.Position.z
-				wait(0.5)
-			end
-			if playerdied then
-				--print("Player " ..tostring(game.Players.LocalPlayer.Name).. " Died")
-				--print(tostring(SavePosition.Text))
-				wait(0.25)
-				game:GetService("ReplicatedStorage").RespawnEvent:FireServer()
-				wait(0.5)
-	    	    game.Players.LocalPlayer.PlayerGui.plrstats.Enabled = true
-	    	    wait(0.5)
-	    	    camera.CameraType = Enum.CameraType.Track
-	    	    wait(0.25)
-				--print("screengui disabled")
-				repeat wait(0.5) until game.Players.LocalPlayer.Character.Humanoid
-				--print("Teleporting back to " ..tostring(SavePosition.Text))
-				wait(1)
-				local FindHum = game.Players.LocalPlayer.Character:WaitForChild("Humanoid")
-				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(lastlocationx, lastlocationy, lastlocationz)
-				playerdied = false
-			end
-		end
-		wait(1)
-	end		
 end)
 -- ServerHop
 local PlaceID = game.PlaceId
