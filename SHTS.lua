@@ -215,13 +215,55 @@ end)
 -- Stat Viewer
 local Pls = Window:NewTab("Players")
 local Plas = Pls:NewSection("Player list:")
+local StatChecker = Window:NewTab("Stats")
+local StatCheck = StatChecker:NewSection("Viewer:")
+local PN = StatCheck:NewLabel("Player: ")
+local ST = StatCheck:NewButton("Strength: ","Multiply", function()
+	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Strength")
+end)
+local DR = StatCheck:NewButton("Endurance: ","Multiply", function()
+	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Endurance")
+end)
+local PS = StatCheck:NewButton("Phychic: ","Multiply", function()
+	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Psychic")
+end)
+local AG = StatCheck:NewButton("Agility: ","Multiply", function()
+	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Agility")
+end)
+local TpPlayer = Funcs:NewButton("Player coords: ","Teleports you to choosen player", function()
+	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(LocationX, LocationY,  LocationZ)
+end) 
+local Tokens = StatCheck:NewLabel("Tokens: ")
+local Status = StatCheck:NewLabel("Rank: ")
+
+function UpdateLabels()
+	PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
+	ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
+	DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
+	PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
+	AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
+	Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
+	Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
+	TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
+end
+
+function EmplyLabels()
+	PN:UpdateLabel("Player: ")
+	ST:UpdateButton("Str: ")
+	DR:UpdateButton("End: ")
+	PS:UpdateButton("Psy: ")
+	AG:UpdateButton("Agi: ")
+	Tokens:UpdateLabel("Tokens: ")
+	Status:UpdateLabel("Rank: " .. " | " .. "Fuse: ")
+	TpPlayer:UpdateButton("Player coords: ")
+end
 
 PlayerNames = {}
 local PL = Plas:NewDropdown("Player list","List of players", PlayerNames, function(nick)
-	player = MyPlr
 	local check = Plrs:WaitForChild(nick)
 	print(tostring(check) .. " was found.")
 	player = nick
+	UpdateLabels()
 end)
 
 function UpdatePlayerList()
@@ -242,8 +284,6 @@ local PLRESET = Plas:NewButton("Reset Player List","Update player list", functio
 	UpdatePlayerList()
 end)
 
-local StatChecker = Window:NewTab("Stats")
-local StatCheck = StatChecker:NewSection("Viewer:")
 
 player = tostring(MyPlr)
 spawn(function()
@@ -254,26 +294,6 @@ spawn(function()
 		wait(0.5)
 	end
 end)
-
-local TpPlayer = Funcs:NewButton("Player coords: ","Teleports you to choosen player", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(LocationX, LocationY,  LocationZ)
-end) 
-
-local PN = StatCheck:NewLabel("Player: ")
-local ST = StatCheck:NewButton("Strength: ","Multiply", function()
-	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Strength")
-end)
-local DR = StatCheck:NewButton("Endurance: ","Multiply", function()
-	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Endurance")
-end)
-local PS = StatCheck:NewButton("Phychic: ","Multiply", function()
-	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Psychic")
-end)
-local AG = StatCheck:NewButton("Agility: ","Multiply", function()
-	game:GetService("ReplicatedStorage").remotes.multi:InvokeServer("Agility")
-end)
-local Tokens = StatCheck:NewLabel("Tokens: ")
-local Status = StatCheck:NewLabel("Rank: ")
 
 spawn(function()
 	while true do
@@ -339,23 +359,9 @@ end)
 spawn(function()
 	while true do
 		if player ~= "" then
-			PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
-			ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
-			DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
-			PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
-			AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
-			Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
-			Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
-			TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
+			UpdateLabels()
 		else
-			PN:UpdateLabel("Player: ")
-			ST:UpdateButton("Str: ")
-			DR:UpdateButton("End: ")
-			PS:UpdateButton("Psy: ")
-			AG:UpdateButton("Agi: ")
-			Tokens:UpdateLabel("Tokens: ")
-			Status:UpdateLabel("Rank: " .. " | " .. "Fuse: ")
-			TpPlayer:UpdateButton("Player coords: ")
+			EmplyLabels()
 		end
 		wait(0.25)
 	end
