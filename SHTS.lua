@@ -236,76 +236,7 @@ end)
 local Tokens = StatCheck:NewLabel("Tokens: ")
 local Status = StatCheck:NewLabel("Rank: ")
 
-function UpdateLabels()
-	PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
-	ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
-	DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
-	PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
-	AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
-	Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
-	Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
-	TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
-end
-
-function EmplyLabels()
-	PN:UpdateLabel("Player: ")
-	ST:UpdateButton("Str: ")
-	DR:UpdateButton("End: ")
-	PS:UpdateButton("Psy: ")
-	AG:UpdateButton("Agi: ")
-	Tokens:UpdateLabel("Tokens: ")
-	Status:UpdateLabel("Rank: " .. " | " .. "Fuse: ")
-	TpPlayer:UpdateButton("Player coords: ")
-end
-
-PlayerNames = {}
-local PL = Plas:NewDropdown("Player list","List of players", PlayerNames, function(nick)
-	local check = Plrs:WaitForChild(nick)
-	print(tostring(check) .. " was found.")
-	player = nick
-	UpdateLabels()
-end)
-
-function UpdatePlayerList()
-	local children = Plrs:GetChildren()
-	PlayerNames = {}
-	PL:Refresh(PlayerNames)
-	wait(0.5)
-	for i = 1, #children do
-		local child = children[i]
-		local player = child.Name
-		PlayerNames[i] = player
-		PL:Refresh(PlayerNames)
-	end
-	PL:Refresh(PlayerNames)
-end
-
-local PLRESET = Plas:NewButton("Reset Player List","Update player list", function()
-	UpdatePlayerList()
-end)
-
-
-player = tostring(MyPlr)
-spawn(function()
-	while true do
-		LocationX = round(game.Players[player].Character.HumanoidRootPart.Position.x, 0)
-		LocationY = round(game.Players[player].Character.HumanoidRootPart.Position.y, 0)
-		LocationZ = round(game.Players[player].Character.HumanoidRootPart.Position.z, 0)
-		wait(0.5)
-	end
-end)
-
-spawn(function()
-	while true do
-		wait(180)
-		game:GetService("ReplicatedStorage").remotes.Fuse:InvokeServer()
-		wait(0.1)
-		game:GetService("ReplicatedStorage").remotes.rankup:InvokeServer()
-	end
-end)
-
-spawn(function()
-	while true do
+function Multiplies()
 		PlrStrMult = tonumber(game.Players[player].data["Strength Multi"].Value)
 		PlrEndMult = tonumber(game.Players[player].data["Endurance Multi"].Value)
 		PlrPsyMult = tonumber(game.Players[player].data["Psychic Multi"].Value)
@@ -353,12 +284,81 @@ spawn(function()
 			PlrGPMult = 1
 		end
 		wait(0.25)
+end
+
+function UpdateLabels()
+	PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
+	ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
+	DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
+	PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
+	AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
+	Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
+	Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
+	TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
+end
+
+function EmplyLabels()
+	PN:UpdateLabel("Player: ")
+	ST:UpdateButton("Str: ")
+	DR:UpdateButton("End: ")
+	PS:UpdateButton("Psy: ")
+	AG:UpdateButton("Agi: ")
+	Tokens:UpdateLabel("Tokens: ")
+	Status:UpdateLabel("Rank: " .. " | " .. "Fuse: ")
+	TpPlayer:UpdateButton("Player coords: ")
+end
+
+PlayerNames = {}
+local PL = Plas:NewDropdown("Player list","List of players", PlayerNames, function(nick)
+	local check = Plrs:WaitForChild(nick)
+	print(tostring(check) .. " was found.")
+	player = nick
+	Multiplies()
+	UpdateLabels()
+end)
+
+function UpdatePlayerList()
+	local children = Plrs:GetChildren()
+	PlayerNames = {}
+	PL:Refresh(PlayerNames)
+	wait(0.5)
+	for i = 1, #children do
+		local child = children[i]
+		local player = child.Name
+		PlayerNames[i] = player
+		PL:Refresh(PlayerNames)
+	end
+	PL:Refresh(PlayerNames)
+end
+
+local PLRESET = Plas:NewButton("Reset Player List","Update player list", function()
+	UpdatePlayerList()
+end)
+
+
+player = tostring(MyPlr)
+spawn(function()
+	while true do
+		LocationX = round(game.Players[player].Character.HumanoidRootPart.Position.x, 0)
+		LocationY = round(game.Players[player].Character.HumanoidRootPart.Position.y, 0)
+		LocationZ = round(game.Players[player].Character.HumanoidRootPart.Position.z, 0)
+		wait(0.5)
+	end
+end)
+
+spawn(function()
+	while true do
+		wait(180)
+		game:GetService("ReplicatedStorage").remotes.Fuse:InvokeServer()
+		wait(0.1)
+		game:GetService("ReplicatedStorage").remotes.rankup:InvokeServer()
 	end
 end)
 
 spawn(function()
 	while true do
 		if player ~= "" then
+			Multiplies()
 			UpdateLabels()
 		else
 			EmplyLabels()
@@ -368,49 +368,40 @@ spawn(function()
 end)
 -- Farm Tab
 local Farm = Window:NewTab("Auto Farm")
-getgenv().StrToggled = false
-getgenv().EndToggled = false
-getgenv().PsyToggled = false
 
 local Power = Farm:NewSection("Power")
-local StrTogg = Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
+Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	if farmfist then
 		farmfistactive = true
 		farmfiststate = true
-		getgenv().StrToggled = farmfist
 	else
 		farmfiststate = false
 		farmfistactive = false
-		getgenv().StrToggled = farmfist
 	end
 end)
 
-local EndTogg = Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
+Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
 	if farmbody then
 		farmbodyactive = true
 		farmbodystate = true
-		getgenv().EndToggled = farmbody
 	else
 		farmbodyactive = false
 		farmbodystate = false
-		getgenv().EndToggled = farmbody
 	end
 end)
 
-local PsyTogg = Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
+Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
 	if farmpsyc then
 		farmpsychicactive = true
 		farmpsychicstate = true
-		getgenv().PsyToggled = farmpsyc
 	else
 		farmpsychicactive = false
 		farmpsychicstate = false
-		getgenv().PsyToggled = farmpsyc
 	end
 end)
 
 local Other = Farm:NewSection("Other")
-local AgiTogg = Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
+Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
 	if farmagil then
 		farmagilityactive = true
 	else
@@ -423,9 +414,6 @@ Other:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
 		farmpresentactive = true
 	else
 		farmpresentactive = false
-		wait(1)
-		workspace[plr.Name].HumanoidRootPart.Anchored = false
-		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
 	end
 end)
 
@@ -595,35 +583,12 @@ function RemoveESP(plr)
 	end
 end
 
-game:GetService("RunService").RenderStepped:Connect(function()
-	wait(0.5)
-	if getgenv().StrToggled then
-		StrTogg:UpdateToggle("Strength: ON", true)
-	else
-		StrTogg:UpdateToggle("Strength: OFF", false)
-	end
-	wait(0.5)
-	if getgenv().EndToggled then
-		EndTogg:UpdateToggle("Endurance: ON", true)
-	else
-		EndTogg:UpdateToggle("Endurance: OFF", false)
-	end
-	wait(0.5)
-	if getgenv().PsyToggled then
-		PsyTogg:UpdateToggle("Psychic: ON", true)
-	else
-		PsyTogg:UpdateToggle("Psychic: OFF", false)
-	end
-	wait(0.5)
-end)
-
 Run:BindToRenderStep("UpdateESP", Enum.RenderPriority.Character.Value, function()
 	for _, v in next, Plrs:GetPlayers() do
 		UpdateESP(v)
 	end
 end)
 -- Farming
-
 spawn(function()
 	while true do
 		while farmfistactive and not playerdied do
@@ -631,8 +596,6 @@ spawn(function()
 			farmpsychicstate = false
 			farmbodyactive = false
 			farmbodystate = false 
-			EndTogg:UpdateToggle("Endurance: OFF", false)
-			PsyTogg:UpdateToggle("Psychic: OFF", false)
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e39 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-679, 113, -740)
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 3e33 then
@@ -680,8 +643,6 @@ spawn(function()
 			farmpsychicstate = false
 			farmfistactive = false 
 			farmfiststate = false 
-			StrTogg:UpdateToggle("Strength: OFF", false)
-			PsyTogg:UpdateToggle("Psychic: OFF", false)
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e39 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-587, 20, -591)
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 3e33 then
@@ -729,8 +690,6 @@ spawn(function()
 			farmbodystate = false
 			farmfistactive = false
 			farmfiststate = false 
-			StrTogg:UpdateToggle("Strength: OFF", false)
-			EndTogg:UpdateToggle("Endurance: OFF", false)
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e39 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
 			elseif tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 3e33 then
