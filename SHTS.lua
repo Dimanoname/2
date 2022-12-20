@@ -211,7 +211,13 @@ Funcs:NewButton("Disable anchor", "Makes ur player able to move", function()
 		game.workspace[tostring(MyPlr)].HumanoidRootPart.Anchored = false
 	end
 end)
-
+Funcs:NewButton("Use codes", "Uses all possible codes", function()
+	game:GetService("ReplicatedStorage").remotes.EnterCode:FireServer("BETA")
+	game:GetService("ReplicatedStorage").remotes.EnterCode:FireServer("HUNDREDLIKES")
+	game:GetService("ReplicatedStorage").remotes.EnterCode:FireServer("HUNDREDFAVORITES")
+	game:GetService("ReplicatedStorage").remotes.EnterCode:FireServer("TYSMFORTENKVISITS")
+	game:GetService("ReplicatedStorage").remotes.EnterCode:FireServer("TWOHUNDREDGROUPMEMBERS")
+end)
 -- Stat Viewer
 local Pls = Window:NewTab("Players")
 local Plas = Pls:NewSection("Player list:")
@@ -756,6 +762,8 @@ spawn(function()
 				farmbodyactive = false
 				farmpsychicactive = false
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(presPos1, presPos2+3, presPos3)
+				wait(0.25)
+				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
 				VirtualUser:CaptureController()
 				VirtualUser:SetKeyDown(101)
 				wait(2)
@@ -837,201 +845,153 @@ function Teleport()
         end)
     end
 end
-
 -- Teleports
-
 Other:NewButton("Safe Zone", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
 end)
-
 -- FS
-
 FSTP:NewButton("Strength 100 (x5)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 298)
 end)
-
 FSTP:NewButton("Strength 5k (x20)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(296, -1, 314)
 end)
-
 FSTP:NewButton("Strength 100k (x100)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 306)
 end)
-
 FSTP:NewButton("Strength 5M (x1k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 363)
 end)
-
 FSTP:NewButton("Strength 1B (x25k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(239, -1, 816)
 end)
-
 FSTP:NewButton("Strength 100B (x125k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(468, -1, 75)
 end)
-
 FSTP:NewButton("Strength 5T (x1M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1982, 5, -200)
 end)
-
 FSTP:NewButton("Strength 5Qa (x15M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
 end)
-
 FSTP:NewButton("Strength 1Qi (x100M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2033, 25, 2036)
 end)
-
 FSTP:NewButton("Strength 1Sx (x2.5B)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2418, 62, 1723)
 end)
-
 FSTP:NewButton("Strength 7Sp (x75B)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1283, -143, 653)
 	wait(0.25)
 	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 end)
-
 FSTP:NewButton("Strength 3Oc (x1T)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-486, 5, 2034)
 end)
-
 FSTP:NewButton("Strength 5N (x1Qa)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580, 26, 1806)
 end)
-
 FSTP:NewButton("Strength 3Dc (x250Qa)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-400, 22, -514)
 end)
-
 FSTP:NewButton("Strength 1Dd (x50Qi)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-679, 113, -740)
 end)
-
 -- BT
-
 BTTP:NewButton("Endurance 100 (x5)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(346, -1, 334)
 end)
-
 BTTP:NewButton("Endurance 5k (x20)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(317, 0, 363)
 end)
-
 BTTP:NewButton("Endurance 100k (x100)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(146, -7, 291)
 end)
-
 BTTP:NewButton("Endurance 5M (x1k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249, 8, 860)
 end)
-
 BTTP:NewButton("Endurance 1B (x25k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(807, -19, 1109)
 end)
-
 BTTP:NewButton("Endurance 100B (x125k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(412, -1, 105)
 end)
-
 BTTP:NewButton("Endurance 5T (x1M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1906, 5, -523)
 end)
-
 BTTP:NewButton("Endurance 5Qa (x15M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1962, 5, -318)
 end)
-
 BTTP:NewButton("Endurance 1Qi (x100M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2022, -13, 1214)
 end)
-
 BTTP:NewButton("Endurance 1Sx (x2.5B)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2402, 58, 1316)
 end)
-
 BTTP:NewButton("Endurance 7Sp (x75B)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1214, -162, 557)
 	wait(0.25)
 	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 end)
-
 BTTP:NewButton("Endurance 3Oc (x1T)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-484, -10, 2064)
 end)
-
 BTTP:NewButton("Endurance 5N (x1Qa)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-399, 91, 1939)
 end)
-
 BTTP:NewButton("Endurance 3Dc (x250Qa)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-546, 10, -316)
 end)
-
 BTTP:NewButton("Endurance 1Dd (x50Qi)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-587, 20, -591)
 end)
-
 -- PP
-
 PPTP:NewButton("Psychic 100 (x5)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(319, -1, 319)
 end)
-
 PPTP:NewButton("Psychic 5k (x20)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(459, 16, 337)
 end)
-
 PPTP:NewButton("Psychic 100k (x100)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(265, 116, 530)
 end)
-
 PPTP:NewButton("Psychic 5M (x1k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(924, -2, 680)
 end)
-
 PPTP:NewButton("Psychic 1B (x25k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(701, 24, 487)
 end)
-
 PPTP:NewButton("Psychic 100B (x125k)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 92)
 end)
-
 PPTP:NewButton("Psychic 5T (x1M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2003, -13, -638)
 end)
-
 PPTP:NewButton("Psychic 5Qa (x15M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -411)
 end)
-
 PPTP:NewButton("Psychic 1Qi (x100M)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2029, -10, 1600)
 end)
-
 PPTP:NewButton("Psychic 1Sx (x2.5B)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2295, 192, 1514)
 end)
-
 PPTP:NewButton("Psychic 7Sp (x75B)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1140, -139, 486)
 	wait(0.25)
 	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
 end)
-
 PPTP:NewButton("Psychic 3Oc (x1T)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-409, 5, 1627)
 end)
-
 PPTP:NewButton("Psychic 5N (x1Qa)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-206, 10, 1823)
 end)
-
 PPTP:NewButton("Psychic 3Dc (x250Qa)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-510, 22, -500)
 end)
-
 PPTP:NewButton("Psychic 1Dd (x50Qi)", "Teleport", function()
 	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
 end)
+-- Updating players
+UpdatePlayerList()
