@@ -352,7 +352,6 @@ spawn(function()
 end)
 -- Farm Tab
 local Farm = Window:NewTab("Auto Farm")
-
 local Power = Farm:NewSection("Power")
 local StrToggle = Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	if farmfist then
@@ -403,33 +402,6 @@ local KlsToggle = Other:NewToggle("Kills", "Toggling Kills Farm", function(farmk
 		getgenv().farmkillsactive = false
 	end
 end)
-if not playerdied then
-	if getgenv().farmfistactive then
-		StrToggle:UpdateToggle("Strength", true)
-	elseif getgenv().farmbodyactive then
-		DurToggle:UpdateToggle("Endurance", true)
-	elseif getgenv().farmpsychicactive then
-		PsyToggle:UpdateToggle("Psychic", true)
-	elseif getgenv().farmpresentactive then
-		PrsToggle:UpdateToggle("Presents", true)
-	elseif getgenv().farmagilityactive then
-		AgiToggle:UpdateToggle("Agility", true)
-	elseif getgenv().farmkillsactive then
-		KlsToggle:UpdateToggle("Kills", true)
-	elseif not getgenv().farmfistactive then
-		StrToggle:UpdateToggle("Strength", false)
-	elseif not getgenv().farmbodyactive then
-		DurToggle:UpdateToggle("Endurance", false)
-	elseif not getgenv().farmpsychicactive then
-		PsyToggle:UpdateToggle("Psychic", false)
-	elseif not getgenv().farmpresentactive then
-		PrsToggle:UpdateToggle("Presents", false)
-	elseif not getgenv().farmagilityactive then
-		AgiToggle:UpdateToggle("Agility", false)
-	elseif not getgenv().farmkillsactive then
-		KlsToggle:UpdateToggle("Kills", false)
-	end
-end
 -- Teleport Tab
 local Teleports = Window:NewTab("Teleports")
 local Other = Teleports:NewSection("Others:")
