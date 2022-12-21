@@ -249,9 +249,7 @@ function Multiplies()
 		PlrAgiMult = tonumber(game.Players[player].data["Agility Multi"].Value)
 		PlrRankMult = tonumber(game.Players[player].data.RankMulti.Value)
 		PlrFuseMult = tonumber(game.Players[player].data.FusionMulti.Value)
-		if game.Players[player].Elements.EquippedElement.Value == None then
-			PlrEleMult= 1
-		elseif game.Players[player].Elements.EquippedElement.Value == "Fire" then
+		if game.Players[player].Elements.EquippedElement.Value == "Fire" then
 			PlrEleMult= 1.5
 		elseif game.Players[player].Elements.EquippedElement.Value == "Water" then
 			PlrEleMult= 2
@@ -283,6 +281,8 @@ function Multiplies()
 			PlrEleMult= 2
 		elseif game.Players[player].Elements.EquippedElement.Value == "Holly" then
 			PlrEleMult= 10
+		else
+			PlrEleMult= 1
 		end
 		if game.Players[player].data["x2PowerTimer"].Value >= 1 then
 			PlrGPMult = 2
@@ -294,10 +294,10 @@ end
 
 function UpdateLabels()
 	PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
-	ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
-	DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
-	PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
-	AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
+	ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
+	DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
+	PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
+	AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
 	Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
 	Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
 	TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
@@ -319,8 +319,6 @@ local PL = Plas:NewDropdown("Player list","List of players", PlayerNames, functi
 	local check = Plrs:WaitForChild(nick)
 	print(tostring(check) .. " was found.")
 	player = nick
-	Multiplies()
-	UpdateLabels()
 end)
 
 function UpdatePlayerList()
@@ -332,7 +330,6 @@ function UpdatePlayerList()
 		local child = children[i]
 		local player = child.Name
 		PlayerNames[i] = player
-		PL:Refresh(PlayerNames)
 	end
 	PL:Refresh(PlayerNames)
 end
@@ -363,7 +360,7 @@ end)
 
 spawn(function()
 	while true do
-		if player ~= "" then
+		if player ~= nil then
 			Multiplies()
 			UpdateLabels()
 		else
@@ -420,6 +417,14 @@ Other:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
 		farmpresentactive = true
 	else
 		farmpresentactive = false
+	end
+end)
+
+Other:NewToggle("Kills", "Toggling Kills Farm", function(farmkills)
+	if farmkills then
+		farmkillsactive = true
+	else
+		farmkillsactive = false
 	end
 end)
 
@@ -774,6 +779,36 @@ spawn(function()
 			farmbodyactive = farmbodystate
 			farmpsychicactive = farmpsychicstate
 		end
+	end
+end)
+
+spawn(function()
+	while true do
+		PlrX = round(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.x, 0)
+		PlrY = round(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.y, 0)
+		PlrZ = round(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.z, 0)
+		wait(0.25)
+	end
+end)
+
+function TpPlrs()
+	local children = Plrs:GetChildren()
+	wait(0.25)
+	for i = 1, #children do
+		local child = children[i]
+		local player = child.Name
+        game.workspace[player].HumanoidRootPart.CFrame = CFrame.new(PlrX, PlrY, PlrZ)
+	end
+end
+
+spawn(function()
+	while true do 
+		if farmkillsactive then
+			game:GetService("ReplicatedStorage").remotes.ability:InvokeServer("EnergyBlast", Vector3.new(PlrX, PlrY, PlrZ))
+			TpPlrs()
+			wait(0.25)
+		end
+		wait()
 	end
 end)
 -- ServerHop
