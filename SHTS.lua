@@ -1,8 +1,7 @@
 while not game:IsLoaded() do
-	wait(0.25)
     game.Loaded:Wait()
+	wait(0.25)
 end
-
 local bc = BrickColor.new("Gold") -- Change white to the colour you want.
 local bc2 = BrickColor.new("Grey") -- Change white to the colour you want.
 game.StarterGui:SetCore("ChatMakeSystemMessage", {
@@ -23,7 +22,6 @@ game.StarterGui:SetCore("ChatMakeSystemMessage", {
     Color = bc2.Color;
     FontSize = Enum.FontSize.Size96
 })
-
 -- Aliases
 local plr = game:GetService("Players").LocalPlayer
 local char = plr.Character
@@ -51,28 +49,21 @@ game:service'Players'.LocalPlayer.Idled:connect(function()
 end)
 -- Properties
 workspace[plr.Name].HumanoidRootPart.Anchored = false
-
-showtopplayersactive = false
-showtopplayersfistactive = false
-showtopplayersbodyactive = false
-showtopplayersspeedactive = false
-showtopplayersjumpactive = false
-showtopplayerspsychicactive = false
-settplocation = false
-playerdied = fals
-resetplayerstat = false
-killplayeractive = false
-
+getgenv().farmfistactive = false
+getgenv().farmbodyactive = false
+getgenv().farmpsychicactive = false
+getgenv().farmagilityactive = false
+getgenv().farmpresentactive = false
+getgenv().farmkillsactive = false
+playerdied = false
 ESPEnabled = false
 ESPLength = 5000
-
 human:UnequipTools()
 -- Round
 function round(num, numDecimalPlaces)
 	local mult = 10^(numDecimalPlaces or 0)
 	return math.floor(num * mult + 0.5) / mult
 end
-	
 function converttoletter(num)
 	if num / 1e57 >=1 then
 		newnum = num / 1e57
@@ -134,14 +125,12 @@ function converttoletter(num)
 	else return num
 	end
 end
-
 function converttohours(mins)
 	if mins / 60 >= 1 then
 		hours = mins / 60
 		return round(hours, 1) .. "h"
 	end
 end
-
 function converttodays(mins)
 	if mins / 60 >= 1 then
 		hours = mins / 60
@@ -291,7 +280,6 @@ function Multiplies()
 		end
 		wait(0.25)
 end
-
 function UpdateLabels()
 	PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
 	ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
@@ -302,7 +290,6 @@ function UpdateLabels()
 	Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
 	TpPlayer:UpdateButton("Player coords: " ..tostring(LocationX) .. ", " .. tostring(LocationY) .. ", " .. tostring(LocationZ))
 end
-
 function EmplyLabels()
 	PN:UpdateLabel("Player: ")
 	ST:UpdateButton("Str: ")
@@ -320,7 +307,6 @@ local PL = Plas:NewDropdown("Player list","List of players", PlayerNames, functi
 	print(tostring(check) .. " was found.")
 	player = nick
 end)
-
 function UpdatePlayerList()
 	local children = Plrs:GetChildren()
 	PlayerNames = {}
@@ -333,12 +319,9 @@ function UpdatePlayerList()
 	end
 	PL:Refresh(PlayerNames)
 end
-
 local PLRESET = Plas:NewButton("Reset Player List","Update player list", function()
 	UpdatePlayerList()
 end)
-
-
 player = tostring(MyPlr)
 spawn(function()
 	while true do
@@ -348,16 +331,14 @@ spawn(function()
 		wait(0.5)
 	end
 end)
-
 spawn(function()
 	while true do
-		wait(180)
+		wait(5)
 		game:GetService("ReplicatedStorage").remotes.Fuse:InvokeServer()
 		wait(0.1)
 		game:GetService("ReplicatedStorage").remotes.rankup:InvokeServer()
 	end
 end)
-
 spawn(function()
 	while true do
 		if player ~= nil then
@@ -373,72 +354,90 @@ end)
 local Farm = Window:NewTab("Auto Farm")
 
 local Power = Farm:NewSection("Power")
-Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
+local StrToggle = Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	if farmfist then
-		farmfistactive = true
+		getgenv().farmfistactive = true
 		farmfiststate = true
 	else
-		farmfiststate = false
+		getgenv().farmfiststate = false
 		farmfistactive = false
 	end
 end)
-
-Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
+local DurToggle = Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
 	if farmbody then
-		farmbodyactive = true
+		getgenv().farmbodyactive = true
 		farmbodystate = true
 	else
-		farmbodyactive = false
+		getgenv().farmbodyactive = false
 		farmbodystate = false
 	end
 end)
-
-Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
+local PsyToggle = Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
 	if farmpsyc then
-		farmpsychicactive = true
+		getgenv().farmpsychicactive = true
 		farmpsychicstate = true
 	else
-		farmpsychicactive = false
+		getgenv().farmpsychicactive = false
 		farmpsychicstate = false
 	end
 end)
-
 local Other = Farm:NewSection("Other")
-Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
+local AgiToggle = Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
 	if farmagil then
-		farmagilityactive = true
+		getgenv().farmagilityactive = true
 	else
-		farmagilityactive = false
+		getgenv().farmagilityactive = false
 	end
 end)
-
-Other:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
+local PrsToggle = Other:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
 	if farmpres then
-		farmpresentactive = true
+		getgenv().farmpresentactive = true
 	else
-		farmpresentactive = false
+		getgenv().farmpresentactive = false
 	end
 end)
-
-Other:NewToggle("Kills", "Toggling Kills Farm", function(farmkills)
+local KlsToggle = Other:NewToggle("Kills", "Toggling Kills Farm", function(farmkills)
 	if farmkills then
-		farmkillsactive = true
+		getgenv().farmkillsactive = true
 	else
-		farmkillsactive = false
+		getgenv().farmkillsactive = false
 	end
 end)
-
+if not playerdied then
+	if getgenv().farmfistactive then
+		StrToggle:UpdateToggle("Strength", true)
+	elseif getgenv().farmbodyactive then
+		DurToggle:UpdateToggle("Endurance", true)
+	elseif getgenv().farmpsychicactive then
+		PsyToggle:UpdateToggle("Psychic", true)
+	elseif getgenv().farmpresentactive then
+		PrsToggle:UpdateToggle("Presents", true)
+	elseif getgenv().farmagilityactive then
+		AgiToggle:UpdateToggle("Agility", true)
+	elseif getgenv().farmkillsactive then
+		KlsToggle:UpdateToggle("Kills", true)
+	elseif not getgenv().farmfistactive then
+		StrToggle:UpdateToggle("Strength", false)
+	elseif not getgenv().farmbodyactive then
+		DurToggle:UpdateToggle("Endurance", false)
+	elseif not getgenv().farmpsychicactive then
+		PsyToggle:UpdateToggle("Psychic", false)
+	elseif not getgenv().farmpresentactive then
+		PrsToggle:UpdateToggle("Presents", false)
+	elseif not getgenv().farmagilityactive then
+		AgiToggle:UpdateToggle("Agility", false)
+	elseif not getgenv().farmkillsactive then
+		KlsToggle:UpdateToggle("Kills", false)
+	end
+end
 -- Teleport Tab
 local Teleports = Window:NewTab("Teleports")
-
 local Other = Teleports:NewSection("Others:")
 local FSTP = Teleports:NewSection("Strength: ")
 local BTTP = Teleports:NewSection("Endurance: ")
 local PPTP = Teleports:NewSection("Psychic: ")
-
 -- ESP
 CharAddedEvent = { }
-
 Plrs.PlayerAdded:connect(function(plr)
 	UpdatePlayerList()
 	if CharAddedEvent[plr.Name] == nil then
@@ -450,7 +449,6 @@ Plrs.PlayerAdded:connect(function(plr)
 		end)
 	end
 end)
-
 Plrs.PlayerRemoving:connect(function(plr)
 	UpdatePlayerList()
 	if CharAddedEvent[plr.Name] ~= nil then
@@ -459,7 +457,6 @@ Plrs.PlayerRemoving:connect(function(plr)
 	end
 	RemoveESP(plr)
 end)
-
 function CreateESP(plr)
 	if plr ~= nil then
 		local GetChar = plr.Character
@@ -531,7 +528,6 @@ function CreateESP(plr)
 		TxtBody.TextStrokeTransparency = 0.5
 	end
 end
-
 function UpdateESP(plr)
 	local Find = CoreGui:FindFirstChild("ESP_" .. plr.Name)
 	if Find then
@@ -586,14 +582,12 @@ function UpdateESP(plr)
 		end
 	end
 end
-
 function RemoveESP(plr)
 	local ESP = CoreGui:FindFirstChild("ESP_" .. plr.Name)
 	if ESP then
 		ESP:Destroy()
 	end
 end
-
 Run:BindToRenderStep("UpdateESP", Enum.RenderPriority.Character.Value, function()
 	for _, v in next, Plrs:GetPlayers() do
 		UpdateESP(v)
@@ -602,10 +596,10 @@ end)
 -- Farming
 spawn(function()
 	while true do
-		while farmfistactive and not playerdied do
-			farmpsychicactive = false
+		while getgenv().farmfistactive and not playerdied do
+			getgenv().farmpsychicactive = false
 			farmpsychicstate = false
-			farmbodyactive = false
+			getgenv().farmbodyactive = false
 			farmbodystate = false 
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Strength.Value)) >= 1e39 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-679, 113, -740)
@@ -646,13 +640,12 @@ spawn(function()
 		wait(0.25)
 	end
 end)
-
 spawn(function()
 	while true do
 		while farmbodyactive and not playerdied do
-			farmpsychicactive = false
+			getgenv().farmpsychicactive = false
 			farmpsychicstate = false
-			farmfistactive = false 
+			getgenv().farmfistactive = false 
 			farmfiststate = false 
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Endurance.Value)) >= 1e39 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-587, 20, -591)
@@ -693,13 +686,12 @@ spawn(function()
 		wait(0.25)
 	end
 end)
-
 spawn(function()
 	while true do
 		while farmpsychicactive and not playerdied do
-			farmbodyactive = false
+			getgenv().farmbodyactive = false
 			farmbodystate = false
-			farmfistactive = false
+			getgenv().farmfistactive = false
 			farmfiststate = false 
 			if tonumber(string.format("%.0f", game.Players.LocalPlayer.data.Psychic.Value)) >= 1e39 then
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
@@ -740,32 +732,30 @@ spawn(function()
 		wait(0.25)
 	end
 end)
-
 spawn(function()
 	while true do
 		wait(0.25)
-		while farmagilityactive do
+		while getgenv().farmagilityactive do
 			wait(0.1)
 			game:GetService("ReplicatedStorage").remotes.train:FireServer("agility")
 		end
 	end
 end)
-
 spawn(function()
 	while true do
 		wait(0.25)
-		while farmpresentactive do
+		while getgenv().farmpresentactive do
 			present = workspace.map.Presents:FindFirstChild("Present")
-			farmfiststate = farmfistactive
-			farmbodystate = farmbodyactive
-			farmpsychicstate = farmpsychicactive
+			farmfiststate = getgenv().farmfistactive
+			farmbodystate = getgenv().farmbodyactive
+			farmpsychicstate = getgenv().farmpsychicactive
 			if present then
 				presPos1 = round(present.Position.x)
 				presPos2 = round(present.Position.y)
 				presPos3 = round(present.Position.z)
-				farmfistactive = false
-				farmbodyactive = false
-				farmpsychicactive = false
+				getgenv().farmfistactive = false
+				getgenv().farmbodyactive = false
+				getgenv().farmpsychicactive = false
 				game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(presPos1, presPos2+3, presPos3)
 				wait(0.25)
 				game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
@@ -775,13 +765,12 @@ spawn(function()
 				VirtualUser:SetKeyUp(101)
 			end
 			wait(0.5)
-			farmfistactive = farmfiststate
-			farmbodyactive = farmbodystate
-			farmpsychicactive = farmpsychicstate
+			getgenv().farmfistactive = farmfiststate
+			getgenv().farmbodyactive = farmbodystate
+			getgenv().farmpsychicactive = farmpsychicstate
 		end
 	end
 end)
-
 spawn(function()
 	while true do
 		PlrX = round(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.x, 0)
@@ -790,7 +779,6 @@ spawn(function()
 		wait(0.25)
 	end
 end)
-
 function TpPlrs()
 	local children = Plrs:GetChildren()
 	wait(0.25)
@@ -800,10 +788,9 @@ function TpPlrs()
         game.workspace[player].HumanoidRootPart.CFrame = CFrame.new(PlrX, PlrY, PlrZ)
 	end
 end
-
 spawn(function()
 	while true do 
-		if farmkillsactive then
+		if getgenv().farmkillsactive then
 			game:GetService("ReplicatedStorage").remotes.ability:InvokeServer("EnergyBlast", Vector3.new(PlrX, PlrY, PlrZ))
 			TpPlrs()
 			wait(0.25)
@@ -869,7 +856,6 @@ function TPReturner()
         end
     end
 end
-
 function Teleport()
     while wait() do
         pcall(function()
@@ -880,153 +866,155 @@ function Teleport()
         end)
     end
 end
--- Teleports
-Other:NewButton("Safe Zone", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
-end)
--- FS
-FSTP:NewButton("Strength 100 (x5)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 298)
-end)
-FSTP:NewButton("Strength 5k (x20)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(296, -1, 314)
-end)
-FSTP:NewButton("Strength 100k (x100)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 306)
-end)
-FSTP:NewButton("Strength 5M (x1k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 363)
-end)
-FSTP:NewButton("Strength 1B (x25k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(239, -1, 816)
-end)
-FSTP:NewButton("Strength 100B (x125k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(468, -1, 75)
-end)
-FSTP:NewButton("Strength 5T (x1M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1982, 5, -200)
-end)
-FSTP:NewButton("Strength 5Qa (x15M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
-end)
-FSTP:NewButton("Strength 1Qi (x100M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2033, 25, 2036)
-end)
-FSTP:NewButton("Strength 1Sx (x2.5B)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2418, 62, 1723)
-end)
-FSTP:NewButton("Strength 7Sp (x75B)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1283, -143, 653)
-	wait(0.25)
-	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-end)
-FSTP:NewButton("Strength 3Oc (x1T)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-486, 5, 2034)
-end)
-FSTP:NewButton("Strength 5N (x1Qa)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580, 26, 1806)
-end)
-FSTP:NewButton("Strength 3Dc (x250Qa)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-400, 22, -514)
-end)
-FSTP:NewButton("Strength 1Dd (x50Qi)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-679, 113, -740)
-end)
--- BT
-BTTP:NewButton("Endurance 100 (x5)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(346, -1, 334)
-end)
-BTTP:NewButton("Endurance 5k (x20)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(317, 0, 363)
-end)
-BTTP:NewButton("Endurance 100k (x100)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(146, -7, 291)
-end)
-BTTP:NewButton("Endurance 5M (x1k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249, 8, 860)
-end)
-BTTP:NewButton("Endurance 1B (x25k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(807, -19, 1109)
-end)
-BTTP:NewButton("Endurance 100B (x125k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(412, -1, 105)
-end)
-BTTP:NewButton("Endurance 5T (x1M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1906, 5, -523)
-end)
-BTTP:NewButton("Endurance 5Qa (x15M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1962, 5, -318)
-end)
-BTTP:NewButton("Endurance 1Qi (x100M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2022, -13, 1214)
-end)
-BTTP:NewButton("Endurance 1Sx (x2.5B)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2402, 58, 1316)
-end)
-BTTP:NewButton("Endurance 7Sp (x75B)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1214, -162, 557)
-	wait(0.25)
-	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-end)
-BTTP:NewButton("Endurance 3Oc (x1T)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-484, -10, 2064)
-end)
-BTTP:NewButton("Endurance 5N (x1Qa)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-399, 91, 1939)
-end)
-BTTP:NewButton("Endurance 3Dc (x250Qa)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-546, 10, -316)
-end)
-BTTP:NewButton("Endurance 1Dd (x50Qi)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-587, 20, -591)
-end)
--- PP
-PPTP:NewButton("Psychic 100 (x5)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(319, -1, 319)
-end)
-PPTP:NewButton("Psychic 5k (x20)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(459, 16, 337)
-end)
-PPTP:NewButton("Psychic 100k (x100)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(265, 116, 530)
-end)
-PPTP:NewButton("Psychic 5M (x1k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(924, -2, 680)
-end)
-PPTP:NewButton("Psychic 1B (x25k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(701, 24, 487)
-end)
-PPTP:NewButton("Psychic 100B (x125k)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 92)
-end)
-PPTP:NewButton("Psychic 5T (x1M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2003, -13, -638)
-end)
-PPTP:NewButton("Psychic 5Qa (x15M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -411)
-end)
-PPTP:NewButton("Psychic 1Qi (x100M)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2029, -10, 1600)
-end)
-PPTP:NewButton("Psychic 1Sx (x2.5B)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2295, 192, 1514)
-end)
-PPTP:NewButton("Psychic 7Sp (x75B)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1140, -139, 486)
-	wait(0.25)
-	game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
-end)
-PPTP:NewButton("Psychic 3Oc (x1T)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-409, 5, 1627)
-end)
-PPTP:NewButton("Psychic 5N (x1Qa)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-206, 10, 1823)
-end)
-PPTP:NewButton("Psychic 3Dc (x250Qa)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-510, 22, -500)
-end)
-PPTP:NewButton("Psychic 1Dd (x50Qi)", "Teleport", function()
-	game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
-end)
+if not playerdied then
+	-- Teleports
+	Other:NewButton("Safe Zone", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
+	end)
+	-- FS
+	FSTP:NewButton("Strength 100 (x5)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 298)
+	end)
+	FSTP:NewButton("Strength 5k (x20)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(296, -1, 314)
+	end)
+	FSTP:NewButton("Strength 100k (x100)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 306)
+	end)
+	FSTP:NewButton("Strength 5M (x1k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(276, -1, 363)
+	end)
+	FSTP:NewButton("Strength 1B (x25k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(239, -1, 816)
+	end)
+	FSTP:NewButton("Strength 100B (x125k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(468, -1, 75)
+	end)
+	FSTP:NewButton("Strength 5T (x1M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1982, 5, -200)
+	end)
+	FSTP:NewButton("Strength 5Qa (x15M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2086, 30, -388)
+	end)
+	FSTP:NewButton("Strength 1Qi (x100M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2033, 25, 2036)
+	end)
+	FSTP:NewButton("Strength 1Sx (x2.5B)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2418, 62, 1723)
+	end)
+	FSTP:NewButton("Strength 7Sp (x75B)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1283, -143, 653)
+		wait(0.25)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+	end)
+	FSTP:NewButton("Strength 3Oc (x1T)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-486, 5, 2034)
+	end)
+	FSTP:NewButton("Strength 5N (x1Qa)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-580, 26, 1806)
+	end)
+	FSTP:NewButton("Strength 3Dc (x250Qa)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-400, 22, -514)
+	end)
+	FSTP:NewButton("Strength 1Dd (x50Qi)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-679, 113, -740)
+	end)
+	-- BT
+	BTTP:NewButton("Endurance 100 (x5)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(346, -1, 334)
+	end)
+	BTTP:NewButton("Endurance 5k (x20)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(317, 0, 363)
+	end)
+	BTTP:NewButton("Endurance 100k (x100)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(146, -7, 291)
+	end)
+	BTTP:NewButton("Endurance 5M (x1k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(249, 8, 860)
+	end)
+	BTTP:NewButton("Endurance 1B (x25k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(807, -19, 1109)
+	end)
+	BTTP:NewButton("Endurance 100B (x125k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(412, -1, 105)
+	end)
+	BTTP:NewButton("Endurance 5T (x1M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1906, 5, -523)
+	end)
+	BTTP:NewButton("Endurance 5Qa (x15M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1962, 5, -318)
+	end)
+	BTTP:NewButton("Endurance 1Qi (x100M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2022, -13, 1214)
+	end)
+	BTTP:NewButton("Endurance 1Sx (x2.5B)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2402, 58, 1316)
+	end)
+	BTTP:NewButton("Endurance 7Sp (x75B)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1214, -162, 557)
+		wait(0.25)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+	end)
+	BTTP:NewButton("Endurance 3Oc (x1T)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-484, -10, 2064)
+	end)
+	BTTP:NewButton("Endurance 5N (x1Qa)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-399, 91, 1939)
+	end)
+	BTTP:NewButton("Endurance 3Dc (x250Qa)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-546, 10, -316)
+	end)
+	BTTP:NewButton("Endurance 1Dd (x50Qi)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-587, 20, -591)
+	end)
+	-- PP
+	PPTP:NewButton("Psychic 100 (x5)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(319, -1, 319)
+	end)
+	PPTP:NewButton("Psychic 5k (x20)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(459, 16, 337)
+	end)
+	PPTP:NewButton("Psychic 100k (x100)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(265, 116, 530)
+	end)
+	PPTP:NewButton("Psychic 5M (x1k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(924, -2, 680)
+	end)
+	PPTP:NewButton("Psychic 1B (x25k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(701, 24, 487)
+	end)
+	PPTP:NewButton("Psychic 100B (x125k)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(306, -1, 92)
+	end)
+	PPTP:NewButton("Psychic 5T (x1M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2003, -13, -638)
+	end)
+	PPTP:NewButton("Psychic 5Qa (x15M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2073, 49, -411)
+	end)
+	PPTP:NewButton("Psychic 1Qi (x100M)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2029, -10, 1600)
+	end)
+	PPTP:NewButton("Psychic 1Sx (x2.5B)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(2295, 192, 1514)
+	end)
+	PPTP:NewButton("Psychic 7Sp (x75B)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(1140, -139, 486)
+		wait(0.25)
+		game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+	end)
+	PPTP:NewButton("Psychic 3Oc (x1T)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-409, 5, 1627)
+	end)
+	PPTP:NewButton("Psychic 5N (x1Qa)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-206, 10, 1823)
+	end)
+	PPTP:NewButton("Psychic 3Dc (x250Qa)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-510, 22, -500)
+	end)
+	PPTP:NewButton("Psychic 1Dd (x50Qi)", "Teleport", function()
+		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-578, 105, -529)
+	end)
+end
 -- Updating players
 UpdatePlayerList()
