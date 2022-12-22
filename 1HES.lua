@@ -94,7 +94,7 @@ spawn(function()
 		while getgenv().farmwinsactive and not playerdied do
             game:GetService("ReplicatedStorage").Common.Library.Network.RemoteFunction:InvokeServer(unpack(args))
             wait(2.5)
-            game.workspace[MyPlr].HumanoidRootPart.CFrame = CFrame.new(784, 6, -2500)
+            game.workspace[tostring(MyPlr)].HumanoidRootPart.CFrame = CFrame.new(784, 6, -2500)
 		end
 		wait()
 	end
