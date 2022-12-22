@@ -46,13 +46,8 @@ game:service'Players'.LocalPlayer.Idled:connect(function()
 	VirtualUser:ClickButton2(Vector2.new())
 end)
 -- Properties
-local args = {
-    [1] = "S_System_Rebirth",
-    [2] = {}
-}
 workspace[plr.Name].HumanoidRootPart.Anchored = false
 playerdied = false
-getgenv().farmwinsactive = false
 -- Main info
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/2/main/KavoUI.lua"))()
 local Window = Library.CreateLib("Useless GUI | HES", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
@@ -76,26 +71,21 @@ end)
 Funcs:NewButton("Serverhop", "Hoping to another server", function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/1/main/serverhop"))()
 end)
--- Farm Tab
-local Farm = Window:NewTab("Auto Farm")
-local Wins = Farm:NewSection("Wins")
-Wins:NewToggle("Wins", "Toggling Wins Farm", function(farmwins)
-	if farmwins then
-		getgenv().farmwinsactive = true
-		farmwinsstate = true
-	else
-		farmwinsstate = false
-		getgenv().farmwinsactive = false
-	end
+Funcs:NewSlider("Speed", "changes ur speed", 5000000, 16, function(s) -- 500 (MaxValue) | 0 (MinValue)
+        speed = s
 end)
--- Farmins
+-- Farming
 spawn(function()
-	while true do
-		while getgenv().farmwinsactive and not playerdied do
-            game:GetService("ReplicatedStorage").Common.Library.Network.RemoteFunction:InvokeServer(unpack(args))
-            wait(2.5)
-            game.workspace[MyPlr].HumanoidRootPart.CFrame = CFrame.new(784, 6, -2500)
-		end
-		wait()
-	end
+    while true do
+        wait()
+        plrchar = workspace:WaitForChild(tostring(MyPlr))
+        print(tostring(plrchar) ..  " was found")
+        plrhuman = plrchar:WaitForChild("Humanoid")
+        print(tostring(plrhuman) ..  " was found")
+        if game.Players.LocalPlayer.Character.Humanoid.WalkSpeed < 16 then
+            plrhuman.WalkSpeed = 16
+        else
+            plrhuman.WalkSpeed = speed
+        end
+    end
 end)
