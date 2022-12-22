@@ -1,6 +1,6 @@
 while not game:IsLoaded() do
     game.Loaded:Wait()
-	wait(0.25)
+	wait(1)
 end
 local bc = BrickColor.new("Gold") -- Change white to the colour you want.
 local bc2 = BrickColor.new("Grey") -- Change white to the colour you want.
@@ -188,7 +188,7 @@ Funcs:NewButton("Rejoin", "Rejoining to same server", function()
 	loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/1/main/rejoin"))()
 end)
 Funcs:NewButton("Serverhop", "Hoping to another server", function()
-	Teleport()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/1/main/serverhop"))()
 end)
 Funcs:NewButton("Enable anchor", "Makes ur player unable to move", function()
 	if game.workspace[tostring(MyPlr)].HumanoidRootPart.Anchored ~= true then
@@ -319,7 +319,7 @@ function UpdatePlayerList()
 	end
 	PL:Refresh(PlayerNames)
 end
-local PLRESET = Plas:NewButton("Reset Player List","Update player list", function()
+Plas:NewButton("Reset Player List","Update player list", function()
 	UpdatePlayerList()
 end)
 player = tostring(MyPlr)
@@ -353,16 +353,16 @@ end)
 -- Farm Tab
 local Farm = Window:NewTab("Auto Farm")
 local Power = Farm:NewSection("Power")
-local StrToggle = Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
+Power:NewToggle("Strength", "Toggling Strength Farm", function(farmfist)
 	if farmfist then
 		getgenv().farmfistactive = true
 		farmfiststate = true
 	else
-		getgenv().farmfiststate = false
-		farmfistactive = false
+		farmfiststate = false
+		getgenv().farmfistactive = false
 	end
 end)
-local DurToggle = Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
+Power:NewToggle("Endurance", "Toggling Endurance Farm", function(farmbody)
 	if farmbody then
 		getgenv().farmbodyactive = true
 		farmbodystate = true
@@ -371,7 +371,7 @@ local DurToggle = Power:NewToggle("Endurance", "Toggling Endurance Farm", functi
 		farmbodystate = false
 	end
 end)
-local PsyToggle = Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
+Power:NewToggle("Psychic", "Toggling Psychic Farm", function(farmpsyc)
 	if farmpsyc then
 		getgenv().farmpsychicactive = true
 		farmpsychicstate = true
@@ -381,25 +381,56 @@ local PsyToggle = Power:NewToggle("Psychic", "Toggling Psychic Farm", function(f
 	end
 end)
 local Other = Farm:NewSection("Other")
-local AgiToggle = Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
+Other:NewToggle("Agility", "Toggling Agility Farm", function(farmagil)
 	if farmagil then
 		getgenv().farmagilityactive = true
 	else
 		getgenv().farmagilityactive = false
 	end
 end)
-local PrsToggle = Other:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
+Other:NewToggle("Presents", "Toggling Presents Farm", function(farmpres)
 	if farmpres then
 		getgenv().farmpresentactive = true
 	else
 		getgenv().farmpresentactive = false
 	end
 end)
-local KlsToggle = Other:NewToggle("Kills", "Toggling Kills Farm", function(farmkills)
-	if farmkills then
-		getgenv().farmkillsactive = true
+-- PVP Tab
+local PvP = Window:NewTab("PvP")
+local Buttons = PvP:NewSection("PVP:")
+Targets = {}
+local TL = Buttons:NewDropdown("Targets list","List of players", Targets, function(nick)
+	local check = Plrs:WaitForChild(nick)
+	print(tostring(check) .. " was found.")
+	target = nick
+end)
+function UpdateTargetsList()
+	local children = Plrs:GetChildren()
+	Targets = {}
+	TL:Refresh(Targets)
+	wait(0.5)
+	for i = 1, #children do
+		local child = children[i]
+		local player = child.Name
+		Targets[i] = player
+	end
+	TL:Refresh(Targets)
+end
+Buttons:NewButton("Reset Targets List","Update player list", function()
+	UpdateTargetsList()
+end)
+Buttons:NewToggle("Kill all", "Toggling Killing All", function(allkill)
+	if allkill then
+		getgenv().killall = true
 	else
-		getgenv().farmkillsactive = false
+		getgenv().killall = false
+	end
+end)
+Buttons:NewToggle("Kill target", "Toggling Killing Target", function(tarkill)
+	if tarkill then
+		getgenv().killtar = true
+	else
+		getgenv().killtar = false
 	end
 end)
 -- Teleport Tab
@@ -412,6 +443,7 @@ local PPTP = Teleports:NewSection("Psychic: ")
 CharAddedEvent = { }
 Plrs.PlayerAdded:connect(function(plr)
 	UpdatePlayerList()
+	UpdateTargetsList()
 	if CharAddedEvent[plr.Name] == nil then
 		CharAddedEvent[plr.Name] = plr.CharacterAdded:connect(function(char)
 			if ESPEnabled then
@@ -423,6 +455,7 @@ Plrs.PlayerAdded:connect(function(plr)
 end)
 Plrs.PlayerRemoving:connect(function(plr)
 	UpdatePlayerList()
+	UpdateTargetsList()
 	if CharAddedEvent[plr.Name] ~= nil then
 		CharAddedEvent[plr.Name]:Disconnect()
 		CharAddedEvent[plr.Name] = nil
@@ -743,6 +776,7 @@ spawn(function()
 		end
 	end
 end)
+-- PVP
 spawn(function()
 	while true do
 		PlrX = round(game.Players.LocalPlayer.Character.HumanoidRootPart.Position.x, 0)
@@ -751,95 +785,50 @@ spawn(function()
 		wait(0.25)
 	end
 end)
-function TpPlrs()
+function TpALL()
 	local children = Plrs:GetChildren()
 	wait(0.25)
 	for i = 1, #children do
 		local child = children[i]
-		local player = child.Name
-        game.workspace[player].HumanoidRootPart.CFrame = CFrame.new(PlrX, PlrY, PlrZ)
+		if child.name  == tostring(MyPlr) or game.Players[child.name].InArea.Value == "SafeZone" then
+		else
+			local check = workspace:WaitForChild(child.name)
+			local player = tostring(check)
+			print(tostring(player) .. "was found!")
+			game.workspace[player].HumanoidRootPart.CFrame = CFrame.new(PlrX, PlrY, PlrZ)
+			game.workspace[player].HumanoidRootPart.Anchored = true
+		end
 	end
 end
 spawn(function()
 	while true do 
-		if getgenv().farmkillsactive then
-			game:GetService("ReplicatedStorage").remotes.ability:InvokeServer("EnergyBlast", Vector3.new(PlrX, PlrY, PlrZ))
-			TpPlrs()
-			wait(0.25)
+		if getgenv().killall then
+			game:GetService("ReplicatedStorage").remotes.ability:InvokeServer("EnergyBlast", Vector3.new(PlrX, PlrY+5, PlrZ))
+			TpALL()
+			wait()
 		end
 		wait()
 	end
 end)
--- ServerHop
-local PlaceID = game.PlaceId
-local AllIDs = {}
-local foundAnything = ""
-local actualHour = os.date("!*t").hour
-local Deleted = false
-local File = pcall(function()
-    AllIDs = game:GetService('HttpService'):JSONDecode(readfile("NotSameServers.json"))
+function TpTar()
+	if target == tostring(MyPlr) or game.Players[target].InArea.Value == "SafeZone" then
+	else
+		game.workspace[target].HumanoidRootPart.CFrame = CFrame.new(PlrX, PlrY, PlrZ)
+		game.workspace[target].HumanoidRootPart.Anchored = true
+	end
+end
+spawn(function()
+	while true do 
+		if getgenv().killtar then
+			game:GetService("ReplicatedStorage").remotes.ability:InvokeServer("EnergyBlast", Vector3.new(PlrX, PlrY+5, PlrZ))
+			TpTar()
+			wait()
+		end
+		wait()
+	end
 end)
-if not File then
-    table.insert(AllIDs, actualHour)
-    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-end
-function TPReturner()
-    local Site;
-    if foundAnything == "" then
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100'))
-    else
-        Site = game.HttpService:JSONDecode(game:HttpGet('https://games.roblox.com/v1/games/' .. PlaceID .. '/servers/Public?sortOrder=Asc&limit=100&cursor=' .. foundAnything))
-    end
-    local ID = ""
-    if Site.nextPageCursor and Site.nextPageCursor ~= "null" and Site.nextPageCursor ~= nil then
-        foundAnything = Site.nextPageCursor
-    end
-    local num = 0;
-    for i,v in pairs(Site.data) do
-        local Possible = true
-        ID = tostring(v.id)
-        if tonumber(v.maxPlayers) > tonumber(v.playing) then
-            for _,Existing in pairs(AllIDs) do
-                if num ~= 0 then
-                    if ID == tostring(Existing) then
-                        Possible = false
-                    end
-                else
-                    if tonumber(actualHour) ~= tonumber(Existing) then
-                        local delFile = pcall(function()
-                            delfile("NotSameServers.json")
-                            AllIDs = {}
-                            table.insert(AllIDs, actualHour)
-                        end)
-                    end
-                end
-                num = num + 1
-            end
-            if Possible == true then
-                table.insert(AllIDs, ID)
-                wait()
-                pcall(function()
-                    writefile("NotSameServers.json", game:GetService('HttpService'):JSONEncode(AllIDs))
-                    wait()
-                    game:GetService("TeleportService"):TeleportToPlaceInstance(PlaceID, ID, game.Players.LocalPlayer)
-                end)
-                wait(4)
-            end
-        end
-    end
-end
-function Teleport()
-    while wait() do
-        pcall(function()
-            TPReturner()
-            if foundAnything ~= "" then
-                TPReturner()
-            end
-        end)
-    end
-end
+-- Teleports
 if not playerdied then
-	-- Teleports
 	Other:NewButton("Safe Zone", "Teleport", function()
 		game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(-144, -1, 485)
 	end)
@@ -990,3 +979,4 @@ if not playerdied then
 end
 -- Updating players
 UpdatePlayerList()
+UpdateTargetsList()
