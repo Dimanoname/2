@@ -975,7 +975,7 @@ spawn(function()
 		game:GetService("ReplicatedStorage").remotes.Fuse:InvokeServer()
 		wait()
 		game:GetService("ReplicatedStorage").remotes.rankup:InvokeServer()
-		wait(15)
+		wait(5)
 	end
 end)
 --StatChecker
