@@ -790,7 +790,7 @@ function TpALL()
 	wait(0.25)
 	for i = 1, #children do
 		local child = children[i]
-		if child.name  == tostring(MyPlr) or game.Players[child.name].InArea.Value == "SafeZone" then
+		if child.name  == tostring(MyPlr) or game.Players[child.name].InArea.Value == "SafeZone" or game.Players[child.name].AP.Value < 1e06 then
 		else
 			local check = workspace:WaitForChild(child.name)
 			local player = tostring(check)
