@@ -162,6 +162,9 @@ function converttotime(secs)
 	else
 		hours = "00"
 		newmins = "00"
+		if secs < 10 then
+			secs = ("0" .. secs)
+		end
 		return hours .. ":" .. newmins .. ":" .. secs
 	end
 end
