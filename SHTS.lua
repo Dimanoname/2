@@ -121,55 +121,6 @@ function converttoletter(num)
 	else return num
 	end
 end
-function converttotime(secs)
-	if secs / 60 >= 1 then
-		newsecs = secs - 60
-		while newsecs >= 60 do
-			newsecs = newsecs - 60
-		end
-		if newsecs < 10 and newsecs > -1 then
-			newsecs = ("0" .. newsecs)
-		end
-		mins = secs / 60
-		if mins + 0.5 <= round(mins, 0) then
-			mins = round(mins, 0) - 1
-		elseif mins + 0.5 > round(mins, 0) then
-			mins = round(mins, 0)
-		end
-		if mins / 60 >= 1 then
-			newmins = mins - 60
-			while newmins >= 60 do
-				newmins = newmins - 60
-			end
-			if newmins < 10 and newmins > -1 then
-				newmins = ("0" .. newmins)
-			end
-			hours = mins / 60
-			if hours + 0.5 <= round(hours, 0) then
-				hours = round(hours, 0) - 1
-			elseif hours + 0.5 > round(hours, 0) then
-				hours = round(hours, 0)
-			end
-			if hours < 10 then
-				hours = ("0" .. hours)
-			end
-			return hours .. ":" .. newmins .. ":" .. newsecs
-		else
-			hours = "00"
-			if mins < 10 then
-				mins = ("0" .. mins)
-			end
-			return hours .. ":" .. mins .. ":" .. newsecs
-		end
-	else
-		hours = "00"
-		newmins = "00"
-		if secs < 10 then
-			secs = ("0" .. secs)
-		end
-		return hours .. ":" .. newmins .. ":" .. secs
-	end
-end
 -- Main info
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/2/main/KavoUI.lua"))()
 local Window = Library.CreateLib("Useless GUI | SHTS", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
@@ -178,7 +129,6 @@ local Info = Window:NewTab("Info")
 local InfoSec = Info:NewSection("Info:")
 InfoSec:NewLabel("Creator's Discord: Useless#3770")
 InfoSec:NewLabel("This gui was created with KavoUI")
-InfoSec:NewLabel("If you want to create the same - learn it")
 InfoSec:NewLabel("If you found some bugs, send them to my discrod")
 local KeyBinds = Info:NewSection("Keybinds")
 KeyBinds:NewKeybind("Toggle UI", "Toggle UI", Enum.KeyCode.RightControl, function()
@@ -233,6 +183,9 @@ Funcs:NewButton("Use codes", "Uses all possible codes", function()
 	game:GetService("ReplicatedStorage").remotes.EnterCode:FireServer("HUNDREDFAVORITES")
 	game:GetService("ReplicatedStorage").remotes.EnterCode:FireServer("TYSMFORTENKVISITS")
 	game:GetService("ReplicatedStorage").remotes.EnterCode:FireServer("TWOHUNDREDGROUPMEMBERS")
+end)
+Funcs:NewButton("Discord server", "Copy discord server link", function()
+	setclipboard("https://discord.gg/FpU33ABjsJ")
 end)
 -- Stat Viewer
 local Pls = Window:NewTab("Players")
@@ -763,18 +716,15 @@ function CamTarg()
 	camera.CameraSubject = wc
 	camera.CameraType = Enum.CameraType.Track
 end
-spawn(function()
-	while true do
-		if playgui.Enabled == true then
-			repeat playgui.Enabled = false until playgui.Enabled == false
-		end
-		if game.Players.LocalPlayer.PlayerGui.Main.Enabled == false then
-			repeat game.Players.LocalPlayer.PlayerGui.Main.Enabled = true until game.Players.LocalPlayer.PlayerGui.Main.Enabled == true
-		end
-		CamTarg()
-		wait(1)
-	end		
-end)
+function RemGui()
+	if playgui.Enabled == true then
+		repeat playgui.Enabled = false until playgui.Enabled == false
+	end
+	if game.Players.LocalPlayer.PlayerGui.Main.Enabled == false then
+		repeat game.Players.LocalPlayer.PlayerGui.Main.Enabled = true until game.Players.LocalPlayer.PlayerGui.Main.Enabled == true
+	end
+	CamTarg()
+end
 -- Teleports
 if not playerdied then
 	Other:NewButton("Safe Zone", "Teleport", function()
@@ -1031,20 +981,15 @@ function Multiplies()
 	else
 		PlrGPMult = 1
 	end
-	if game.Players[player].PlayerGui.Popups.WeekendEvent.Visible == true then
-		WeekEvMult = 1.75
-	else
-		WeekEvMult = 1
-	end
-	wait(0.25)
+	wait()
 end
 function UpdateLabels()
-	PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")" .. " | " .. converttotime(game.Players[player].data["x2PowerTimer"].Value))
+	PN:UpdateLabel("Player: " .. player .. " | " .. tostring(game.Players[player].leaderstats.Reputation.Value) .. " (" .. tostring(game.Players[player].data.RepAmount.Value) .. ")")
 	AP:UpdateLabel("Absolute Power: " .. converttoletter(tostring(game.Players[player].AP.Value)))
-	ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult*WeekEvMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Strength Multi Cost"].Value)))
-	DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult*WeekEvMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
-	PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult*WeekEvMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
-	AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult*WeekEvMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
+	ST:UpdateButton("Str: " .. converttoletter(tostring(game.Players[player].data.Strength.Value)) .. " | x" .. converttoletter(tostring(PlrStrMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(game.Players[player].data["Strength Multi Cost"].Value))
+	DR:UpdateButton("End: " .. converttoletter(tostring(game.Players[player].data.Endurance.Value)) .. " | x" .. converttoletter(tostring(PlrEndMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Endurance Multi Cost"].Value)))
+	PS:UpdateButton("Psy: " .. converttoletter(tostring(game.Players[player].data.Psychic.Value)) .. " | x" .. converttoletter(tostring(PlrPsyMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Psychic Multi Cost"].Value)))
+	AG:UpdateButton("Agi: " .. converttoletter(tostring(game.Players[player].data.Agility.Value)) .. " | x" .. converttoletter(tostring(PlrAgiMult*PlrRankMult*PlrFuseMult*PlrGPMult*PlrEleMult)) .. " | " .. "Upg: " .. converttoletter(tostring(game.Players[player].data["Agility Multi Cost"].Value)))
 	Tokens:UpdateLabel("Tokens: " .. converttoletter(tostring(game.Players[player].data.Tokens.Value)) .. " | " .. converttoletter(tostring(game.Players[player].data.Snokens.Value)))
 	Status:UpdateLabel("Rank: " .. tostring(game.Players[player].leaderstats.Rank.Value) .. " | " .. "Fuse: " .. tostring(game.Players[player].leaderstats.Fusion.Value))
 end
