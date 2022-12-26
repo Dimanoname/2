@@ -87,7 +87,7 @@ function converttoletter(num)
 		return round(newnum, 3).. "Un"
 	elseif num / 1e33 >=1 then
 		newnum = num / 1e33
-		return round(newnum, 3).. "De"
+		return round(newnum, 3).. "Dc"
 	elseif num / 1e30 >=1 then
 		newnum = num / 1e30
 		return round(newnum, 3).. "No"
@@ -156,7 +156,9 @@ function converttotime(secs)
 			return hours .. ":" .. newmins .. ":" .. newsecs
 		else
 			hours = "00"
-			newmins = "00"
+			if mins < 10 then
+				mins = ("0" .. mins)
+			end
 			return hours .. ":" .. mins .. ":" .. newsecs
 		end
 	else
@@ -1031,6 +1033,8 @@ function Multiplies()
 	end
 	if game.Players[player].PlayerGui.Popups.WeekendEvent.Visible == true then
 		WeekEvMult = 1.75
+	else
+		WeekEvMult = 1
 	end
 	wait(0.25)
 end
