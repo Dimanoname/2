@@ -755,7 +755,7 @@ spawn(function()
 		wait()
 	end
 end)
--- Gui
+-- FreeCam
 function CamTarg()
 	local camera = game.Workspace.CurrentCamera
 	local plr = game:GetService("Players").LocalPlayer
