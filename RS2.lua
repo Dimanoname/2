@@ -572,8 +572,9 @@ spawn(function()
                     getgenv().Farm = true
                 end
             end
-            wait(20)
+            wait()
         end
+        wait()
     end
 end)
 --StatChecker
