@@ -43,11 +43,12 @@ game:service'Players'.LocalPlayer.Idled:connect(function()
 end)
 -- Properties
 workspace[plr.Name].HumanoidRootPart.Anchored = false
+getgenv().Farm = false
 ESPEnabled = false
 ESPLength = 5000
 -- Main info
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/2/main/KavoUI.lua"))()
-local Window = Library.CreateLib("Useless GUI | SHTS", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
+local Window = Library.CreateLib("Useless GUI | RS 2", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
 -- Info Tab
 local Info = Window:NewTab("Info")
 local InfoSec = Info:NewSection("Info:")
@@ -103,6 +104,13 @@ Funcs:NewButton("Disable anchor", "Makes ur player able to move", function()
 end)
 Funcs:NewButton("Discord server", "Copy discord server link", function()
 	setclipboard("https://discord.gg/FpU33ABjsJ")
+end)
+Funcs:NewKeybind("Auto-Farm", "Toggle Auto-Farm",  Enum.KeyCode.KeypadOne, function()
+    if getgenv().Farm then
+        getgenv().Farm = false
+    else
+        getgenv().Farm = true
+    end
 end)
 -- Stat Viewer
 local Pls = Window:NewTab("Players")
@@ -236,3 +244,47 @@ Run:BindToRenderStep("UpdateESP", Enum.RenderPriority.Character.Value, function(
 end)
 -- Updating players
 UpdatePlayerList()
+function BuyRank()
+    local args = {
+        [2] = "Rank"
+    }
+    game:GetService("ReplicatedStorage").Remotes.Purchase:FireServer(unpack(args))
+end
+function BuyScythe()
+    local args = {
+        [1] = "Scythe",
+        [2] = "Buy All"
+    }
+    game:GetService("ReplicatedStorage").Remotes.Purchase:FireServer(unpack(args))
+end
+function BuySatchel()
+    local args = {
+        [1] = "Satchel",
+        [2] = "Buy All"
+    }
+    game:GetService("ReplicatedStorage").Remotes.Purchase:FireServer(unpack(args))
+end
+spawn(function()
+    while true do
+        if getgenv().Farm then
+            game:GetService("ReplicatedStorage").Remotes.ItemUsed:FireServer("Attack")
+            wait()
+        end
+        wait()
+    end
+end)
+spawn(function()
+    while true do
+        if getgenv().Farm then
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(160, 315, 42)
+            wait()
+            BuyRank()
+            BuyScythe()
+            BuySatchel()
+            wait(0.5)
+            game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(140, 312, 42)
+            wait(25)
+        end
+        wait()
+    end
+end)
