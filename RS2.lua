@@ -44,8 +44,173 @@ end)
 -- Properties
 workspace[plr.Name].HumanoidRootPart.Anchored = false
 getgenv().Farm = false
+getgenv().AutoCapt = false
+playerdied = false
 ESPEnabled = false
 ESPLength = 5000
+-- Round
+function round(num, numDecimalPlaces)
+	local mult = 10^(numDecimalPlaces or 0)
+	return math.floor(num * mult + 0.5) / mult
+end
+function converttoletter(num)
+	if num / 1e57 >=1 then
+		newnum = num / 1e57
+		return round(newnum, 3).. "Ocd"
+	elseif num / 1e54 >=1 then
+		newnum = num / 1e54
+		return round(newnum, 3).. "Spd"
+	elseif num / 1e51 >=1 then
+		newnum = num / 1e51
+		return round(newnum, 3).. "Sxd"
+	elseif num / 1e48 >=1 then
+		newnum = num / 1e48
+		return round(newnum, 3).. "Qid"
+	elseif num / 1e45 >=1 then
+		newnum = num / 1e45
+		return round(newnum, 3).. "Qad"
+	elseif num / 1e42 >=1 then
+		newnum = num / 1e42
+		return round(newnum, 3).. "Td"
+	elseif num / 1e39 >=1 then
+		newnum = num / 1e39
+		return round(newnum, 3).. "Dd"
+	elseif num / 1e36 >=1 then
+		newnum = num / 1e36
+		return round(newnum, 3).. "Un"
+	elseif num / 1e33 >=1 then
+		newnum = num / 1e33
+		return round(newnum, 3).. "Dc"
+	elseif num / 1e30 >=1 then
+		newnum = num / 1e30
+		return round(newnum, 3).. "No"
+	elseif num / 1e27 >=1 then
+		newnum = num / 1e27
+		return round(newnum, 3).. "Oc"
+	elseif num / 1e24 >=1 then
+		newnum = num / 1e24
+		return round(newnum, 3).. "Sp"
+	elseif num / 1e21 >=1 then
+		newnum = num / 1e21
+		return round(newnum, 3).. "Sx"
+	elseif num / 1e18 >=1 then
+		newnum = num / 1e18
+		return round(newnum, 3).. "Qi"
+	elseif num / 1e15 >=1 then
+		newnum = num / 1e15
+		return round(newnum, 3).. "Qa"
+	elseif num / 1e12 >=1 then
+		newnum = num / 1e12
+		return round(newnum, 3).. "T"
+	elseif num / 1e09 >=1 then
+		newnum = num / 1e09
+		return round(newnum, 3).. "B"
+	elseif num / 1e06 >=1 then
+		newnum = num / 1e06
+		return round(newnum, 3).. "M"
+	elseif num / 1e03 >=1 then
+		newnum = num / 1e03
+		return round(newnum, 3).. "K"
+	else return num
+	end
+end
+--collect checkpoints
+while true do
+    local area = "Lava Zone"
+    if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+    else
+        local AreaX = Workspace.Checkpoints[area].Area.Position.x
+        local AreaY = Workspace.Checkpoints[area].Area.Position.y
+        local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+        wait(10)
+        if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+        else
+            wait(10)
+        end
+    end
+    local area = "Main Island"
+    if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+    else
+        local AreaX = Workspace.Checkpoints[area].Area.Position.x
+        local AreaY = Workspace.Checkpoints[area].Area.Position.y
+        local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+        wait(10)
+        if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+        else
+            wait(10)
+        end
+    end
+    local area = "Nature World"
+    if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+    else
+        local AreaX = Workspace.Checkpoints[area].Area.Position.x
+        local AreaY = Workspace.Checkpoints[area].Area.Position.y
+        local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+        wait(10)
+        if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+        else
+            wait(10)
+        end
+    end
+    local area = "Cyber World"
+    if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+    else
+        local AreaX = Workspace.Checkpoints[area].Area.Position.x
+        local AreaY = Workspace.Checkpoints[area].Area.Position.y
+        local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+        wait(10)
+        if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+        else
+            wait(10)
+        end
+    end
+    local area = "Haunted World"
+    if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+    else
+        local AreaX = Workspace.Checkpoints[area].Area.Position.x
+        local AreaY = Workspace.Checkpoints[area].Area.Position.y
+        local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+        wait(10)
+        if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+        else
+            wait(10)
+        end
+    end
+    local area = "Water World"
+    if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+    else
+        local AreaX = Workspace.Checkpoints[area].Area.Position.x
+        local AreaY = Workspace.Checkpoints[area].Area.Position.y
+        local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+        wait(10)
+        if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+        else
+            wait(10)
+        end
+    end
+    local area = "Void World"
+    if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+    else
+        local AreaX = Workspace.Checkpoints[area].Area.Position.x
+        local AreaY = Workspace.Checkpoints[area].Area.Position.y
+        local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+        wait(10)
+        if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+        else
+            wait(10)
+        end
+    end
+    game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(140, 312, 42)
+    break
+end
+getgenv().AutoCapt = true
 -- Main info
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/2/main/KavoUI.lua"))()
 local Window = Library.CreateLib("Useless GUI | RS 2", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
@@ -115,6 +280,14 @@ end)
 -- Stat Viewer
 local Pls = Window:NewTab("Players")
 local Plas = Pls:NewSection("Player list:")
+local StatChecker = Window:NewTab("Stats")
+local StatCheck = StatChecker:NewSection("Viewer:")
+local PN = StatCheck:NewLabel("Player: ")
+local Rank = StatCheck:NewLabel("Rank: ")
+local Skulls = StatCheck:NewLabel("Skulls: ")
+local Crowns = StatCheck:NewLabel("Coins: ")
+local Souls = StatCheck:NewLabel("Souls: ")
+local BS = StatCheck:NewLabel("Blue Essence: ")
 PlayerNames = {}
 local PL = Plas:NewDropdown("Player list","List of players", PlayerNames, function(nick)
 	local check = Plrs:WaitForChild(nick)
@@ -244,6 +417,7 @@ Run:BindToRenderStep("UpdateESP", Enum.RenderPriority.Character.Value, function(
 end)
 -- Updating players
 UpdatePlayerList()
+-- Some trash
 function BuyRank()
     local args = {
         [2] = "Rank"
@@ -264,6 +438,7 @@ function BuySatchel()
     }
     game:GetService("ReplicatedStorage").Remotes.Purchase:FireServer(unpack(args))
 end
+-- Auto Farm
 spawn(function()
     while true do
         if getgenv().Farm then
@@ -287,4 +462,145 @@ spawn(function()
         end
         wait()
     end
+end)
+-- Auto-Capture checkpoints
+spawn(function()
+    while true do
+        if getgenv().AutoCapt then
+            local area = "Lava Zone"
+            if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+            else
+                getgenv().Farm = false
+                local AreaX = Workspace.Checkpoints[area].Area.Position.x
+                local AreaY = Workspace.Checkpoints[area].Area.Position.y
+                local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+                wait(10)
+                if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+                else
+                    wait(10)
+                    getgenv().Farm = true
+                end
+            end
+            local area = "Main Island"
+            if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+            else
+                getgenv().Farm = false
+                local AreaX = Workspace.Checkpoints[area].Area.Position.x
+                local AreaY = Workspace.Checkpoints[area].Area.Position.y
+                local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+                wait(10)
+                if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+                else
+                    wait(10)
+                    getgenv().Farm = true
+                end
+            end
+            local area = "Nature World"
+            if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+            else
+                getgenv().Farm = false
+                local AreaX = Workspace.Checkpoints[area].Area.Position.x
+                local AreaY = Workspace.Checkpoints[area].Area.Position.y
+                local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+                wait(10)
+                if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+                else
+                    wait(10)
+                    getgenv().Farm = true
+                end
+            end
+            local area = "Cyber World"
+            if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+            else
+                getgenv().Farm = false
+                local AreaX = Workspace.Checkpoints[area].Area.Position.x
+                local AreaY = Workspace.Checkpoints[area].Area.Position.y
+                local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+                wait(10)
+                if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+                else
+                    wait(10)
+                    getgenv().Farm = true
+                end
+            end
+            local area = "Haunted World"
+            if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+            else
+                getgenv().Farm = false
+                local AreaX = Workspace.Checkpoints[area].Area.Position.x
+                local AreaY = Workspace.Checkpoints[area].Area.Position.y
+                local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+                wait(10)
+                if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+                else
+                    wait(10)
+                    getgenv().Farm = true
+                end
+            end
+            local area = "Water World"
+            if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+            else
+                getgenv().Farm = false
+                local AreaX = Workspace.Checkpoints[area].Area.Position.x
+                local AreaY = Workspace.Checkpoints[area].Area.Position.y
+                local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+                wait(10)
+                if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+                else
+                    wait(10)
+                    getgenv().Farm = true
+                end
+            end
+            local area = "Void World"
+            if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+            else
+                getgenv().Farm = false
+                local AreaX = Workspace.Checkpoints[area].Area.Position.x
+                local AreaY = Workspace.Checkpoints[area].Area.Position.y
+                local AreaZ = Workspace.Checkpoints[area].Area.Position.z
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(AreaX+5, AreaY, AreaZ)
+                wait(10)
+                if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
+                else
+                    wait(10)
+                    getgenv().Farm = true
+                end
+            end
+            wait(20)
+        end
+    end
+end)
+--StatChecker
+function UpdateLabels()
+	PN:UpdateLabel("Player: " .. player)
+	Rank:UpdateLabel("Rank: " .. tostring(game.Players[player].Stats.Rank.Value))
+	Skulls:UpdateLabel("Skulls: " .. tostring(game.Players[player].Stats.Skulls.Value))
+	Crowns:UpdateLabel("Coins: " .. tostring(game.Players[player].Stats.Crowns.Value))
+	Souls:UpdateLabel("Souls: " .. converttoletter(tostring(game.Players[player].Stats.Souls.Value)))
+	BS:UpdateLabel("Blue Essence: " .. converttoletter(tostring(game.Players[player].Stats.BlueEssence.Value)))
+end
+function EmplyLabels()
+	PN:UpdateLabel("Player: ")
+	Rank:UpdateLabel("Rank: ")
+	Skulls:UpdateLabel("Skulls: ")
+	Crowns:UpdateLabel("Coins: ")
+	Souls:UpdateLabel("Souls: ")
+	BS:UpdateLabel("Blue Essence: ")
+end
+player = tostring(MyPlr)
+spawn(function()
+	while true do
+		if player ~= nil then
+			UpdateLabels()
+		else
+			EmplyLabels()
+		end
+		wait()
+	end
 end)
