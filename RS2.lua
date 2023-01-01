@@ -447,22 +447,26 @@ spawn(function()
             game:GetService("ReplicatedStorage").Remotes.ItemUsed:FireServer("Attack")
             wait()
         end
-        wait()
     end
 end)
 spawn(function()
     while true do
         if getgenv().Farm then
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(160, 315, 42)
-            wait()
-            BuyRank()
-            BuyScythe()
-            BuySatchel()
             wait(0.5)
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(140, 312, 42)
             wait(25)
         end
-        wait()
+    end
+end)
+spawn(function()
+    while true do
+        if getgenv().Farm then
+            BuyRank()
+            BuyScythe()
+            BuySatchel()
+            wait(5)
+        end
     end
 end)
 -- Auto-Capture checkpoints
