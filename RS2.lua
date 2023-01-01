@@ -421,8 +421,9 @@ UpdatePlayerList()
 -- Some trash
 function BuyRank()
     local args = {
-        [1] = "Rank"
+        [2] = "Rank"
     }
+    
     game:GetService("ReplicatedStorage").Remotes.Purchase:FireServer(unpack(args))
 end
 function BuyScythe()
