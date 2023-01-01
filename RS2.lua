@@ -211,6 +211,7 @@ while true do
     break
 end
 getgenv().AutoCapt = true
+game:GetService("ReplicatedStorage").Remotes.Sheathe:FireServer("Scythe", true)
 -- Main info
 local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/Dimanoname/2/main/KavoUI.lua"))()
 local Window = Library.CreateLib("Useless GUI | RS 2", "Useless") -- Themes: Useless ; DarkTheme ; LightTheme ; BloodTheme ; GrapeTheme ; Ocean ; Midnight ; Sentinel ; Synapse ; Serpent . 
@@ -420,7 +421,7 @@ UpdatePlayerList()
 -- Some trash
 function BuyRank()
     local args = {
-        [2] = "Rank"
+        [1] = "Rank"
     }
     game:GetService("ReplicatedStorage").Remotes.Purchase:FireServer(unpack(args))
 end
@@ -470,7 +471,6 @@ spawn(function()
             local area = "Lava Zone"
             if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
             else
-                getgenv().Farm = false
                 local AreaX = Workspace.Checkpoints[area].Area.Position.x
                 local AreaY = Workspace.Checkpoints[area].Area.Position.y
                 local AreaZ = Workspace.Checkpoints[area].Area.Position.z
@@ -479,13 +479,11 @@ spawn(function()
                 if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
                 else
                     wait(10)
-                    getgenv().Farm = true
                 end
             end
             local area = "Main Island"
             if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
             else
-                getgenv().Farm = false
                 local AreaX = Workspace.Checkpoints[area].Area.Position.x
                 local AreaY = Workspace.Checkpoints[area].Area.Position.y
                 local AreaZ = Workspace.Checkpoints[area].Area.Position.z
@@ -494,13 +492,11 @@ spawn(function()
                 if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
                 else
                     wait(10)
-                    getgenv().Farm = true
                 end
             end
             local area = "Nature World"
             if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
             else
-                getgenv().Farm = false
                 local AreaX = Workspace.Checkpoints[area].Area.Position.x
                 local AreaY = Workspace.Checkpoints[area].Area.Position.y
                 local AreaZ = Workspace.Checkpoints[area].Area.Position.z
@@ -509,13 +505,11 @@ spawn(function()
                 if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
                 else
                     wait(10)
-                    getgenv().Farm = true
                 end
             end
             local area = "Cyber World"
             if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
             else
-                getgenv().Farm = false
                 local AreaX = Workspace.Checkpoints[area].Area.Position.x
                 local AreaY = Workspace.Checkpoints[area].Area.Position.y
                 local AreaZ = Workspace.Checkpoints[area].Area.Position.z
@@ -524,13 +518,11 @@ spawn(function()
                 if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
                 else
                     wait(10)
-                    getgenv().Farm = true
                 end
             end
             local area = "Haunted World"
             if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
             else
-                getgenv().Farm = false
                 local AreaX = Workspace.Checkpoints[area].Area.Position.x
                 local AreaY = Workspace.Checkpoints[area].Area.Position.y
                 local AreaZ = Workspace.Checkpoints[area].Area.Position.z
@@ -539,13 +531,11 @@ spawn(function()
                 if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
                 else
                     wait(10)
-                    getgenv().Farm = true
                 end
             end
             local area = "Water World"
             if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
             else
-                getgenv().Farm = false
                 local AreaX = Workspace.Checkpoints[area].Area.Position.x
                 local AreaY = Workspace.Checkpoints[area].Area.Position.y
                 local AreaZ = Workspace.Checkpoints[area].Area.Position.z
@@ -554,13 +544,11 @@ spawn(function()
                 if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
                 else
                     wait(10)
-                    getgenv().Farm = true
                 end
             end
             local area = "Void World"
             if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
             else
-                getgenv().Farm = false
                 local AreaX = Workspace.Checkpoints[area].Area.Position.x
                 local AreaY = Workspace.Checkpoints[area].Area.Position.y
                 local AreaZ = Workspace.Checkpoints[area].Area.Position.z
@@ -569,7 +557,6 @@ spawn(function()
                 if Workspace.Checkpoints[area].Owner.Value == tostring(MyPlr) then
                 else
                     wait(10)
-                    getgenv().Farm = true
                 end
             end
             wait()
