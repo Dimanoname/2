@@ -447,6 +447,7 @@ spawn(function()
             game:GetService("ReplicatedStorage").Remotes.ItemUsed:FireServer("Attack")
             wait()
         end
+        wait()
     end
 end)
 spawn(function()
@@ -457,6 +458,7 @@ spawn(function()
             game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(140, 312, 42)
             wait(25)
         end
+        wait()
     end
 end)
 spawn(function()
@@ -467,6 +469,7 @@ spawn(function()
             BuySatchel()
             wait(5)
         end
+        wait()
     end
 end)
 -- Auto-Capture checkpoints
