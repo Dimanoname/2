@@ -628,8 +628,11 @@ function CollectOrbs()
 end
 spawn(function()
     while true do
-        CollectOrbs()
-        wait()
+        local trashyvar = 1
+        repeat 
+            CollectOrbs()
+            wait()
+        until trashyvar == 2
     end
 end)
 --StatChecker
