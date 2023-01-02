@@ -609,7 +609,7 @@ spawn(function()
     end
 end)
 --Collect Orbs
-function CollectBSOrbs()
+function CollectOrbs()
     local orbs = Workspace.AllCoin:GetChildren()
     for i=1, #orbs do
         orb = orbs[i].Bubble
