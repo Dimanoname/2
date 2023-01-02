@@ -45,6 +45,8 @@ end)
 workspace[plr.Name].HumanoidRootPart.Anchored = false
 getgenv().Farm = false
 getgenv().AutoCapt = false
+getgenv().Ret = false
+getgenv().ChestFarm = false
 playerdied = false
 ESPEnabled = false
 ESPLength = 5000
@@ -278,6 +280,17 @@ Funcs:NewKeybind("Auto-Farm", "Toggle Auto-Farm",  Enum.KeyCode.KeypadOne, funct
         getgenv().Farm = true
     end
 end)
+Funcs:NewKeybind("Return Clicker", "Toggle Return Clicker",  Enum.KeyCode.KeypadTwo, function()
+    if getgenv().Ret then
+        getgenv().Ret = false
+    else
+        getgenv().Ret = true
+        local isalive = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+        lastlocationx = isalive.Position.x
+		lastlocationy = isalive.Position.y
+		lastlocationz = isalive.Position.z
+    end
+end)
 -- Stat Viewer
 local Pls = Window:NewTab("Players")
 local Plas = Pls:NewSection("Player list:")
@@ -472,6 +485,29 @@ spawn(function()
         wait()
     end
 end)
+--Click Return
+spawn(function()
+    while true do
+        while getgenv().Ret do
+            local isplayer = game.Players:WaitForChild(tostring(plr))
+            local alive = game.Players.LocalPlayer.Character:WaitForChild("HumanoidRootPart")
+            alive.Anchored = false
+            wait()
+            alive.CFrame = CFrame.new(lastlocationx, lastlocationy, lastlocationz)      
+            wait()
+        end
+        wait()
+    end
+end)
+spawn(function()
+    while true do
+        while getgenv().Ret do
+            game:GetService("ReplicatedStorage").Remotes.ItemUsed:FireServer("Attack")
+            wait()
+        end
+        wait()
+    end
+end)
 -- Auto-Capture checkpoints
 spawn(function()
     while true do
@@ -569,6 +605,30 @@ spawn(function()
             end
             wait()
         end
+        wait()
+    end
+end)
+--Collect Orbs
+function CollectBSOrbs()
+    local orbs = Workspace.AllCoin:GetChildren()
+    for i=1, #orbs do
+        orb = orbs[i].Bubble
+        orb.Position = root.Position
+    end
+    local orbs = Workspace.AllSoul:GetChildren()
+    for i=1, #orbs do
+        orb = orbs[i].Bubble
+        orb.Position = root.Position
+    end
+    local orbs = Workspace.AllBlueEssence:GetChildren()
+    for i=1, #orbs do
+        orb = orbs[i].Bubble
+        orb.Position = root.Position
+    end
+end
+spawn(function()
+    while true do
+        CollectOrbs()
         wait()
     end
 end)
