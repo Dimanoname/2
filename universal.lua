@@ -42,7 +42,6 @@ game:service'Players'.LocalPlayer.Idled:connect(function()
 	VirtualUser:ClickButton2(Vector2.new())
 end)
 -- Properties
-workspace[plr.Name].HumanoidRootPart.Anchored = false
 ESPEnabled = false
 ESPLength = 5000
 -- Main info
